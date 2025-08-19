@@ -1,0 +1,6 @@
+[submodule "bin/rewriting-instrumenter"]
+	path = bin/rewriting-instrumenter
+	url = https://github.com/ejrgilbert/rewriting-instrumenter
+[submodule "bin/v8"]
+	path = bin/v8
+	url = https://chromium.googlesource.com/v8/v8.git

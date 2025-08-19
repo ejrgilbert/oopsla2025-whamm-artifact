@@ -1,0 +1,22 @@
+def calls: HashMap<(u32, u32), u32> = HashMap.new(fst, eq);
+
+export "inc" def inc(caller: u32, callee: u32) {
+	calls[(caller, callee)]++;
+}
+
+export "report" def report() {
+	System.puts("caller,callee,count\n");
+	for (l = Maps.keyList(calls); l != null; l = l.tail) {
+		def key = l.head;
+
+		System.puts(Strings.format3("%d,%d,%d\n", key.0, key.1, calls[key]));
+	}
+}
+
+def fst(p: (u32, u32)) -> int {
+	return i32.view(p.0);
+}
+
+def eq(p0: (u32, u32), p1: (u32, u32)) -> bool {
+	return p0 == p1;
+}

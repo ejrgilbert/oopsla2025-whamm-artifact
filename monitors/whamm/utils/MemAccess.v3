@@ -1,0 +1,31 @@
+def access: HashMap<(i32, bool), i32> = HashMap.new(fst, eq);
+
+export "read" def read(eff_addr: i32) {
+	access[(eff_addr, false)]++;
+}
+
+export "write" def write(eff_addr: i32) {
+	access[(eff_addr, true)]++;
+}
+
+export "report" def report() {
+	System.puts("eff_addr,type,count\n");
+	for (l = Maps.keyList(access); l != null; l = l.tail) {
+		def key = l.head;
+
+		System.puts(Strings.format1("%d,", key.0));
+		if (key.1)
+			System.puts("write,");
+		else
+			System.puts("read,");
+		System.puts(Strings.format1("%d\n", access[key]));
+	}
+}
+
+def fst(p: (i32, bool)) -> i32 {
+	return p.0;
+}
+
+def eq(p0: (i32, bool), p1: (i32, bool)) -> bool {
+	return p0 == p1;
+}
