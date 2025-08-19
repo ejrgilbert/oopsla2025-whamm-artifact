@@ -1,1 +1,0 @@
-wasm:bytecode:call:altm { }
