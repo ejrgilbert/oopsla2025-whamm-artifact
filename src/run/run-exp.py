@@ -1,6 +1,6 @@
 import csv
 import datetime
-from enum import Enum;
+from enum import Enum
 import os
 import re
 import shutil
@@ -9,33 +9,152 @@ import subprocess
 import uuid
 from pathlib import Path
 
+class RunMode(Enum):
+    IntRtInt = "int-rt-int"
+    JitRtInt = "jit-rt-int"
+
+    IntRtJit = "int-rt-jit"
+    JitRtJit = "jit-rt-jit"
+
+    IntTrampInt = "int-tramp-int"
+    JitTrampInt = "jit-tramp-int"
+
+    IntTrampJit = "int-tramp-jit"
+    JitTrampJit = "jit-tramp-jit"
+
+    IntWasmInt = "int-wasm-int"
+    JitWasmInt = "jit-wasm-int"
+
+    IntWasmJit = "int-wasm-jit"
+    JitWasmJit = "jit-wasm-jit"
+
+    Inline = "inline"
+
+    IntDefault = "int-default"
+    JitDefault = "jit-default"
+
+    # For Wasabi:
+    V8 = "v8"
+    V8Prod = "v8-prod"
+
+    def __str__(self):
+        return self.value
+    def invocation(self):
+        if self.value == "inline":
+            return self.value
+        return self.value.split("-", 1)[1]
+    def wizeng_bin(self):
+        return os.path.join(WIZ_PATH, f"wizeng.x86-64-linux_{self.invocation()}")
+    def should_jit(self):
+        return self.value.startswith("jit-") or self.value == "inline"
+
+RUNS = 5
+TOO_LONG = 60
+RUNS_FOR_LONG = 3
+RUN_TIMEOUT = 60 * 10 # 10 mins per run
+RUN_BASELINES = True
+
+MONITORS= {
+    'branches': "",
+    'hotness': "",
+    'icount': "",
+    'imix': "",
+    'cache-sim': "cache=../docker/whamm/user_libs/cache/target/wasm32-wasip1/release/cache.wasm",
+
+    'mem-access': "(whamm_hw)mem=../whamm_monitors/mem.wasm",
+    'loop-tracer': "tracer=../docker/whamm/user_libs/loop_tracer/tracer.wasm",
+    'basic-blocks': "",
+    'instr-coverage': "",
+    'call-graph': "(whamm_hw)call=../whamm_monitors/call.wasm"
+}
+EXPS = {
+    'whamm_engine': [
+        RunMode.IntRtInt,
+        RunMode.JitRtInt,
+        RunMode.IntRtJit,
+        RunMode.JitRtJit,
+
+        RunMode.IntTrampInt,
+
+
+        RunMode.IntTrampJit,
+        # JitTramp* is not a thing!
+        RunMode.JitTrampInt,
+        RunMode.JitTrampJit,
+
+        RunMode.JitWasmInt,
+        RunMode.JitWasmJit,
+
+        RunMode.Inline,
+    ],
+    'whamm_rewrite': [
+        # RunMode.IntDefault,
+        RunMode.JitDefault,
+    ],
+    'whamm_hw': [
+        # RunMode.IntRtInt,
+        # RunMode.JitRtInt,
+        # RunMode.IntRtJit,
+        # RunMode.JitRtJit,
+
+        # RunMode.IntTrampInt,
+        RunMode.IntTrampJit,
+    # JitTramp* is not a thing!
+    # #     RunMode.JitTrampInt,
+    # #     RunMode.JitTrampJit,
+
+        RunMode.JitWasmInt,
+        RunMode.JitWasmJit,
+
+        RunMode.Inline,
+    ],
+    'wizard_native': [
+        RunMode.IntDefault,
+        RunMode.JitDefault
+    ],
+    'orca_rewrite': [
+        # RunMode.IntDefault,
+        RunMode.JitDefault,
+    ],
+    'wasabi': [
+        RunMode.V8,
+        # RunMode.V8Prod
+    ]
+}
+
+ERR_STRS = [ 'error', 'exception', 'trap', 'heapoverflow' ]
+SUITES = [ 'polybench' ]
+SKIP = []
 
 mypath = os.path.abspath(os.path.dirname(__file__))
 
-OUTDIR = os.path.join(mypath, "../output/csv/new/")
+OUTDIR = os.path.join(mypath, "../../resources/")
 
 ct = datetime.datetime.now().strftime("%Y-%m-%d--%H:%M:%S")
 OUTFILE = os.path.join(OUTDIR, f"{ct}.csv")
-HYPERFINE_BIN = os.path.join(mypath, "../bin/hyperfine-v1.19.0-x86_64-unknown-linux-gnu/hyperfine")
-WIZ_PATH = os.path.join(mypath, "../bin/wizeng/")
-D8 = os.path.join(mypath, "../docker/v8/v8/out/x64.release/d8")
+HYPERFINE_BIN = os.path.join(mypath, "../../bin/hyperfine-v1.19.0-x86_64-unknown-linux-gnu/hyperfine")
+WIZ_PATH = os.path.join(mypath, "../../bin/wizeng/")
+
+# TODO: script to build this
+D8 = os.path.join(mypath, "../../bin/v8/out/x64.release/d8")
 
 # Whamm setup
-WHAMM_BIN = os.path.join(mypath, "../docker/whamm/target/debug/whamm")
-WHAMM_MON_PATH = os.path.join(mypath, "../whamm_monitors/")
-CORE_LIB = os.path.join(mypath, "../docker/whamm/whamm_core/target/wasm32-wasip1/release/whamm_core.wasm")
+WHAMM_BIN = os.path.join(mypath, "../../bin/whamm/target/debug/whamm")
+WHAMM_MON_PATH = os.path.join(mypath, "../../monitors/whamm/")
+CORE_LIB = os.path.join(mypath, "../../bin/whamm/whamm_core/target/wasm32-wasip1/release/whamm_core.wasm")
 
 # Orca setup
-ORCA_REWRITER = os.path.join(mypath, "../docker/rewriting-instrumenter/target/debug/rewriting_monitor")
+ORCA_REWRITER = os.path.join(mypath, "../../bin/rewriting-instrumenter/target/debug/rewriting_monitor")
 
 # Wasabi setup
-WASABI = os.path.join(mypath, "../docker/wasabi/wasabi")
-WASABI_RUNNER = os.path.join(mypath, "../docker/wasabi/run.js")
-WASABI_MON_PATH = os.path.join(mypath, "../wasabi/")
+WASABI = os.path.join(mypath, "../../bin/wasabi/wasabi")
+WASABI_RUNNER = os.path.join(mypath, "../../bin/wasabi/run.js")
+WASABI_MON_PATH = os.path.join(mypath, "../../monitors/wasabi/")
 
-COMPOUT = os.path.join(mypath, f"./out/{ct}/")
-ERROUT = os.path.join(mypath, f"./out/{ct}/err")
-BENCHMARK_DIR = os.path.join(mypath, "../suites/")
+COMPOUT = os.path.join(mypath, f"../../out/{ct}/")
+ERROUT = os.path.join(mypath, f"../../out/{ct}/err")
+BENCHMARK_DIR = os.path.join(mypath, "../../suites/")
+
 
 class Result:
     def __init__(self,
@@ -350,7 +469,7 @@ class Result:
             else:
                 continue
 
-    def hdr():
+    def hdr(self):
         return ('config:run_mode,config:monitor,config:experiment,config:special,'
          'benchmark:suite,benchmark:name,'
          'run_errored,run_outfile,run_timed_out,run_time:mean,run_time:user,run_time:system,'
@@ -472,45 +591,6 @@ class Result:
             pass
         return res
 
-class RunMode(Enum):
-    IntRtInt = "int-rt-int"
-    JitRtInt = "jit-rt-int"
-
-    IntRtJit = "int-rt-jit"
-    JitRtJit = "jit-rt-jit"
-
-    IntTrampInt = "int-tramp-int"
-    JitTrampInt = "jit-tramp-int"
-
-    IntTrampJit = "int-tramp-jit"
-    JitTrampJit = "jit-tramp-jit"
-
-    IntWasmInt = "int-wasm-int"
-    JitWasmInt = "jit-wasm-int"
-
-    IntWasmJit = "int-wasm-jit"
-    JitWasmJit = "jit-wasm-jit"
-    
-    Inline = "inline"
-
-    IntDefault = "int-default"
-    JitDefault = "jit-default"
-
-    # For Wasabi:
-    V8 = "v8"
-    V8Prod = "v8-prod"
-
-    def __str__(self):
-        return self.value
-    def invocation(self):
-        if self.value == "inline":
-            return self.value
-        return self.value.split("-", 1)[1]
-    def wizeng_bin(self):
-        return os.path.join(WIZ_PATH, f"wizeng.x86-64-linux_{self.invocation()}")
-    def should_jit(self):
-        return self.value.startswith("jit-") or self.value == "inline"
-
 class ConfigSpecial(Enum):
     CalcBundle = "calc-bundle"
     CalcReport = "calc-report"
@@ -519,91 +599,6 @@ class ConfigSpecial(Enum):
     def __str__(self):
         return self.value
 
-
-RUNS = 5
-
-TOO_LONG = 60
-RUNS_FOR_LONG = 3
-RUN_TIMEOUT = 60 * 10 # 10 mins per run
-
-ERR_STRS = [ 'error', 'exception', 'trap', 'heapoverflow' ]
-SUITES = [ 'r3' ]
-SKIP = [  
-]
-RUN_BASELINES = False
-MONITORS= {
-    # # Old monitors
-    'branches': "",
-    # 'hotness': "",
-    # 'icount': "",
-    # 'imix': "",
-    # 'cache-sim': "cache=../docker/whamm/user_libs/cache/target/wasm32-wasip1/release/cache.wasm",
-
-    # New monitors
-    # 'mem-access': "(whamm_hw)mem=../whamm_monitors/mem.wasm",
-    # 'loop-tracer': "tracer=../docker/whamm/user_libs/loop_tracer/tracer.wasm",
-    # 'basic-blocks': "",
-    # 'instr-coverage': "",
-    # 'call-graph': "(whamm_hw)call=../whamm_monitors/call.wasm",
-
-    # # (TODO: BUG) NOTE: Only for whamm-engine
-    # 'instr-coverage-remove': "(tmp)dyninstr(whamm:dyninstr)=../docker/whamm/user_libs/whamm_dyninstr/whamm:dyninstr.wasm",
-    # 'instr-coverage-block_remove': "(tmp)dyninstr(whamm:dyninstr)=../docker/whamm/user_libs/whamm_dyninstr/whamm:dyninstr.wasm"
-}
-EXPS = {
-    'whamm_engine': [
-        # RunMode.IntRtInt,
-        # RunMode.JitRtInt,
-        # RunMode.IntRtJit,
-        # RunMode.JitRtJit,
-
-        # RunMode.IntTrampInt,
-
-
-        # RunMode.IntTrampJit,
-    # # JitTramp* is not a thing!
-    #     RunMode.JitTrampInt,
-    #     RunMode.JitTrampJit,
-        
-        RunMode.JitWasmInt,
-        # RunMode.JitWasmJit,
-
-        # RunMode.Inline,
-    ],
-    # 'whamm_rewrite': [
-    #     # RunMode.IntDefault,
-    #     RunMode.JitDefault,
-    # ],
-    # 'whamm_hw': [
-    #     # RunMode.IntRtInt,
-    #     # RunMode.JitRtInt,
-    #     # RunMode.IntRtJit,
-    #     # RunMode.JitRtJit,
-
-    #     # RunMode.IntTrampInt,
-    #     RunMode.IntTrampJit,
-    # # JitTramp* is not a thing!
-    # # #     RunMode.JitTrampInt,
-    # # #     RunMode.JitTrampJit,
-        
-    #     RunMode.JitWasmInt,
-    #     RunMode.JitWasmJit,
-
-    #     RunMode.Inline,
-    # ],
-    # 'wizard_native': [
-    #     RunMode.IntDefault,
-    #     RunMode.JitDefault
-    # ],
-    # 'orca_rewrite': [
-    #     # RunMode.IntDefault,
-    #     RunMode.JitDefault,
-    # ],
-    # 'wasabi': [
-    #     RunMode.V8,
-    #     # RunMode.V8Prod
-    # ]
-}
 class Compilation:
     def __init__(self, monitor_module, calc_bundle_module, calc_report_module):
         self.monitor_module = monitor_module
@@ -1064,7 +1059,6 @@ def main():
         run_uninstr()
     for ty,cfgs in EXPS.items():
         run_exp(ty,cfgs)
-        # os._exit(0)
     print(f"Completed run, see output at: {OUTFILE}")
 
 if __name__=="__main__":
