@@ -18,4 +18,4 @@ ENV HOME=/home/docker
 # ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Execute the experiments from the mounted /eval folder. Should be mounted!!
-ENTRYPOINT [ "/eval/scripts/run-all.sh" ]
+ENTRYPOINT [ "/eval/entrypoint.sh" ]

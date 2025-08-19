@@ -126,34 +126,38 @@ ERR_STRS = [ 'error', 'exception', 'trap', 'heapoverflow' ]
 SUITES = [ 'polybench' ]
 SKIP = []
 
+# General setup
 mypath = os.path.abspath(os.path.dirname(__file__))
-
-OUTDIR = os.path.join(mypath, "../../resources/")
-
 ct = datetime.datetime.now().strftime("%Y-%m-%d--%H:%M:%S")
-OUTFILE = os.path.join(OUTDIR, f"{ct}.csv")
-HYPERFINE_BIN = os.path.join(mypath, "../../bin/hyperfine-v1.19.0-x86_64-unknown-linux-gnu/hyperfine")
-WIZ_PATH = os.path.join(mypath, "../../bin/wizeng/")
+
+RSC = "../../resources"
+HYPERFINE_BIN = os.path.join(mypath, f"{RSC}/bin/hyperfine-v1.19.0-x86_64-unknown-linux-gnu/hyperfine")
+WIZ_PATH = os.path.join(mypath, f"{RSC}/bin/wizeng/")
+BENCHMARK_DIR = os.path.join(mypath, f"{RSC}/suites/")
 
 # TODO: script to build this
-D8 = os.path.join(mypath, "../../bin/v8/out/x64.release/d8")
+# V8 setup
+D8 = os.path.join(mypath, f"{RSC}/bin/v8/out/x64.release/d8")
 
 # Whamm setup
-WHAMM_BIN = os.path.join(mypath, "../../bin/whamm/target/debug/whamm")
-WHAMM_MON_PATH = os.path.join(mypath, "../../monitors/whamm/")
-CORE_LIB = os.path.join(mypath, "../../bin/whamm/whamm_core/target/wasm32-wasip1/release/whamm_core.wasm")
+WHAMM_BIN = os.path.join(mypath, f"{RSC}/bin/whamm/target/debug/whamm")
+WHAMM_MON_PATH = os.path.join(mypath, f"{RSC}/monitors/whamm/")
+CORE_LIB = os.path.join(mypath, f"{RSC}/bin/whamm/whamm_core/target/wasm32-wasip1/release/whamm_core.wasm")
 
 # Orca setup
-ORCA_REWRITER = os.path.join(mypath, "../../bin/rewriting-instrumenter/target/debug/rewriting_monitor")
+WIRM_REWRITER = os.path.join(mypath, f"{RSC}/bin/rewriting-instrumenter/target/debug/rewriting_monitor")
 
 # Wasabi setup
-WASABI = os.path.join(mypath, "../../bin/wasabi/wasabi")
-WASABI_RUNNER = os.path.join(mypath, "../../bin/wasabi/run.js")
-WASABI_MON_PATH = os.path.join(mypath, "../../monitors/wasabi/")
+WASABI = os.path.join(mypath, f"{RSC}/bin/wasabi/wasabi")
+WASABI_RUNNER = os.path.join(mypath, f"{RSC}/bin/wasabi/run.js")
+WASABI_MON_PATH = os.path.join(mypath, f"{RSC}/monitors/wasabi/")
 
-COMPOUT = os.path.join(mypath, f"../../out/{ct}/")
-ERROUT = os.path.join(mypath, f"../../out/{ct}/err")
-BENCHMARK_DIR = os.path.join(mypath, "../../suites/")
+# Output setup
+OUT = "../../out"
+COMPOUT = os.path.join(mypath, f"{OUT}/{ct}/compilations")
+ERROUT = os.path.join(mypath, f"{OUT}/{ct}/errors")
+OUTDIR = os.path.join(mypath, f"{OUT}/{ct}/results")
+OUTFILE = os.path.join(mypath, f"{OUT}/{ct}/results/{ct}.csv")
 
 
 class Result:
@@ -709,7 +713,7 @@ def setup_orca_rewrite(monitor, lib, suite, app):
     instr_name = f"{app_name}-{monitor}.wasm"
     target_loc=os.path.join(COMPOUT, f"orca_rewrite/{suite}/{monitor}/{monitor}-{app_name}-rewrite.wasm")
     
-    run_cmd(f"{ORCA_REWRITER} {monitor} {app_path}")
+    run_cmd(f"{WIRM_REWRITER} {monitor} {app_path}")
     run_cmd(f"mv {instr_name} {target_loc}")
 
     if lib == "":
