@@ -10,6 +10,8 @@ export DIR_BIN="${DIR_RSC}/bin"
 export DIR_SRC="${DIR_BASE}/src"
 export DIR_OUT="${DIR_BASE}/out"
 
+mkdir -p "$DIR_OUT"
+
 # Logging functions
 log_ok() {
   GREEN_COLOR="\033[0;32m"

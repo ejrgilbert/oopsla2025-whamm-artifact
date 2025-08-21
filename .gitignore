@@ -1,3 +1,11 @@
+# Giant v8 zip file (couldn't get to build in docker)
+resources/bin/v8.zip
+
+# Run output
+out/
+
+.DS_Store
+
 # For intellij
 .idea/
 

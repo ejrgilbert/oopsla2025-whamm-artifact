@@ -48,12 +48,17 @@ class RunMode(Enum):
     def should_jit(self):
         return self.value.startswith("jit-") or self.value == "inline"
 
-RUNS = 5
+# RUNS = 5
 TOO_LONG = 60
 RUNS_FOR_LONG = 3
-RUN_TIMEOUT = 60 * 10 # 10 mins per run
+# RUN_TIMEOUT = 60 * 10 # 10 mins per run
 RUN_BASELINES = True
 
+# To make faster:
+RUNS = 1
+RUN_TIMEOUT = 60 * 2 # 2 mins per run
+
+SUITES = [ 'polybench' ]
 MONITORS= {
     'branches': "",
     'hotness': "",
@@ -75,12 +80,7 @@ EXPS = {
         RunMode.JitRtJit,
 
         RunMode.IntTrampInt,
-
-
         RunMode.IntTrampJit,
-        # JitTramp* is not a thing!
-        RunMode.JitTrampInt,
-        RunMode.JitTrampJit,
 
         RunMode.JitWasmInt,
         RunMode.JitWasmJit,
@@ -88,20 +88,17 @@ EXPS = {
         RunMode.Inline,
     ],
     'whamm_rewrite': [
-        # RunMode.IntDefault,
+        RunMode.IntDefault,
         RunMode.JitDefault,
     ],
     'whamm_hw': [
-        # RunMode.IntRtInt,
-        # RunMode.JitRtInt,
-        # RunMode.IntRtJit,
-        # RunMode.JitRtJit,
+        RunMode.IntRtInt,
+        RunMode.JitRtInt,
+        RunMode.IntRtJit,
+        RunMode.JitRtJit,
 
-        # RunMode.IntTrampInt,
+        RunMode.IntTrampInt,
         RunMode.IntTrampJit,
-    # JitTramp* is not a thing!
-    # #     RunMode.JitTrampInt,
-    # #     RunMode.JitTrampJit,
 
         RunMode.JitWasmInt,
         RunMode.JitWasmJit,
@@ -113,17 +110,16 @@ EXPS = {
         RunMode.JitDefault
     ],
     'orca_rewrite': [
-        # RunMode.IntDefault,
+        RunMode.IntDefault,
         RunMode.JitDefault,
     ],
     'wasabi': [
         RunMode.V8,
-        # RunMode.V8Prod
+        RunMode.V8Prod
     ]
 }
 
 ERR_STRS = [ 'error', 'exception', 'trap', 'heapoverflow' ]
-SUITES = [ 'polybench' ]
 SKIP = []
 
 # General setup
@@ -473,7 +469,7 @@ class Result:
             else:
                 continue
 
-    def hdr(self):
+    def hdr():
         return ('config:run_mode,config:monitor,config:experiment,config:special,'
          'benchmark:suite,benchmark:name,'
          'run_errored,run_outfile,run_timed_out,run_time:mean,run_time:user,run_time:system,'
