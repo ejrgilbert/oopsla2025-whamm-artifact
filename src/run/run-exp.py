@@ -52,13 +52,14 @@ class RunMode(Enum):
 TOO_LONG = 60
 RUNS_FOR_LONG = 3
 # RUN_TIMEOUT = 60 * 10 # 10 mins per run
-RUN_BASELINES = True
+RUN_BASELINES = False
 
 # To make faster:
 RUNS = 1
 RUN_TIMEOUT = 60 * 2 # 2 mins per run
 
 SUITES = [ 'polybench' ]
+mypath = os.path.abspath(os.path.dirname(__file__))
 RSC = "../../resources"
 whamm_mons = f"{RSC}/monitors/whamm/"
 whamm_utils = f"{whamm_mons}/utils/"
@@ -67,13 +68,13 @@ MONITORS= {
     'hotness': "",
     'icount': "",
     'imix': "",
-    'cache-sim': f"cache={whamm_utils}/cache.wasm",
+    'cache-sim': f"cache={mypath}/{whamm_utils}/cache.wasm",
 
-    'mem-access': f"(whamm_hw)mem={whamm_utils}/mem.wasm",
-    'loop-tracer': f"tracer={whamm_utils}/tracer.wasm",
+    'mem-access': f"(whamm_hw)mem={mypath}/{whamm_utils}/mem.wasm",
+    'loop-tracer': f"tracer={mypath}/{whamm_utils}/tracer.wasm",
     'basic-blocks': "",
     'instr-coverage': "",
-    'call-graph': f"(whamm_hw)call={whamm_utils}/call.wasm"
+    'call-graph': f"(whamm_hw)call={mypath}/{whamm_utils}/call.wasm"
 }
 EXPS = {
     'whamm_engine': [
@@ -126,7 +127,6 @@ ERR_STRS = [ 'error', 'exception', 'trap', 'heapoverflow' ]
 SKIP = []
 
 # General setup
-mypath = os.path.abspath(os.path.dirname(__file__))
 ct = datetime.datetime.now().strftime("%Y-%m-%d--%H:%M:%S")
 
 RSC = "../../resources"
@@ -849,11 +849,11 @@ def run_rewritten(name, monitor, suite, app, unit, cfgs):
         if cfg.should_jit():
             base_cmd += "--mode=jit"
         
-        # runN(f"{base_cmd} {unit.monitor_module}", result, True)
+        runN(f"{base_cmd} {unit.monitor_module}", result, True)
 
-        # if unit.calc_bundle_module != "":
-        #     result.config_special = ConfigSpecial.CalcBundle
-        #     runN(f"{base_cmd} {unit.calc_bundle_module}", result, True)
+        if unit.calc_bundle_module != "":
+            result.config_special = ConfigSpecial.CalcBundle
+            runN(f"{base_cmd} {unit.calc_bundle_module}", result, True)
 
         if unit.calc_report_module != "":
             result.config_special = ConfigSpecial.CalcReport
