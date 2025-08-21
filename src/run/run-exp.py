@@ -1,5 +1,5 @@
 import csv
-import datetime
+# import datetime
 from enum import Enum
 import os
 import re
@@ -8,6 +8,7 @@ from statistics import fmean
 import subprocess
 import uuid
 from pathlib import Path
+import sys
 
 class RunMode(Enum):
     IntRtInt = "int-rt-int"
@@ -52,9 +53,9 @@ class RunMode(Enum):
 TOO_LONG = 60
 RUNS_FOR_LONG = 3
 # RUN_TIMEOUT = 60 * 10 # 10 mins per run
-RUN_BASELINES = False
+RUN_BASELINES = True
 
-# To make faster:
+# TODO: put this back (used to make faster)
 RUNS = 1
 RUN_TIMEOUT = 60 * 2 # 2 mins per run
 
@@ -127,7 +128,11 @@ ERR_STRS = [ 'error', 'exception', 'trap', 'heapoverflow' ]
 SKIP = []
 
 # General setup
-ct = datetime.datetime.now().strftime("%Y-%m-%d--%H:%M:%S")
+if len(sys.argv) != 2:
+    print("Usage: run-exp.py <timestamp>\n\t<timestamp> is used to generate a unique output directory")
+    sys.exit(1)
+ct = sys.argv[1]
+# ct = datetime.datetime.now().strftime("%Y-%m-%d--%H:%M:%S")
 
 RSC = "../../resources"
 BIN = f"{RSC}/bin"
