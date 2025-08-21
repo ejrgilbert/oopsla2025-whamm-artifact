@@ -131,25 +131,25 @@ mypath = os.path.abspath(os.path.dirname(__file__))
 ct = datetime.datetime.now().strftime("%Y-%m-%d--%H:%M:%S")
 
 RSC = "../../resources"
-HYPERFINE_BIN = os.path.join(mypath, f"{RSC}/bin/hyperfine-v1.19.0-x86_64-unknown-linux-gnu/hyperfine")
-WIZ_PATH = os.path.join(mypath, f"{RSC}/bin/wizeng/")
+BIN = f"{RSC}/bin"
+HYPERFINE_BIN = os.path.join(mypath, f"{BIN}/hyperfine-v1.19.0-x86_64-unknown-linux-gnu/hyperfine")
+WIZ_PATH = os.path.join(mypath, f"{BIN}/wizeng/")
 BENCHMARK_DIR = os.path.join(mypath, f"{RSC}/suites/")
 
-# TODO: script to build this
 # V8 setup
-D8 = os.path.join(mypath, f"{RSC}/bin/v8/out/x64.release/d8")
+D8 = os.path.join(mypath, f"{BIN}/v8/out/x64.release/d8")
 
 # Whamm setup
-WHAMM_BIN = os.path.join(mypath, f"{RSC}/bin/whamm/target/debug/whamm")
+WHAMM_BIN = os.path.join(mypath, f"{BIN}/whamm/target/release/whamm")
 WHAMM_MON_PATH = os.path.join(mypath, f"{RSC}/monitors/whamm/")
-CORE_LIB = os.path.join(mypath, f"{RSC}/bin/whamm/whamm_core/target/wasm32-wasip1/release/whamm_core.wasm")
+CORE_LIB = os.path.join(mypath, f"{BIN}/whamm/whamm_core/target/wasm32-wasip1/release/whamm_core.wasm")
 
 # Orca setup
-WIRM_REWRITER = os.path.join(mypath, f"{RSC}/bin/rewriting-instrumenter/target/debug/rewriting_monitor")
+WIRM_REWRITER = os.path.join(mypath, f"{BIN}/rewriting-instrumenter/target/release/rewriting_monitor")
 
 # Wasabi setup
-WASABI = os.path.join(mypath, f"{RSC}/bin/wasabi/wasabi")
-WASABI_RUNNER = os.path.join(mypath, f"{RSC}/bin/wasabi/run.js")
+WASABI = os.path.join(mypath, f"{BIN}/wasabi/wasabi")
+WASABI_RUNNER = os.path.join(mypath, f"{BIN}/wasabi/run.js")
 WASABI_MON_PATH = os.path.join(mypath, f"{RSC}/monitors/wasabi/")
 
 # Output setup

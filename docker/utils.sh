@@ -1,3 +1,15 @@
+export V8_SHA="8db16e651ff456e0eea6e576045623d2039a1d34"
+
+export RUST_VERSION="1.85.1"
+
+export PATH=/depot_tools:$PATH
+
+export DIR_BASE="/eval"
+export DIR_RSC="${DIR_BASE}/resources"
+export DIR_BIN="${DIR_RSC}/bin"
+export DIR_SRC="${DIR_BASE}/src"
+export DIR_OUT="${DIR_BASE}/out"
+
 # Logging functions
 log_ok() {
   GREEN_COLOR="\033[0;32m"
