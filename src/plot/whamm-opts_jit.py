@@ -115,16 +115,25 @@ call_graph_df = get_monitor_df('call-graph')
 # ==== GROUP INTO SUB-SUITES ====
 # ===============================
 
-branches_df_thirds = make_thirds_jit(branches_df)
-hotness_df_thirds = make_thirds_jit(hotness_df)
-icount_df_thirds = make_thirds_jit(icount_df)
-imix_df_thirds = make_thirds_jit(imix_df)
-cache_df_thirds = make_thirds_jit(cache_df)
-mem_access_df_thirds = make_thirds_jit(mem_access_df)
-loop_tracer_df_thirds = make_thirds_jit(loop_tracer_df)
-basic_blocks_df_thirds = make_thirds_jit(basic_blocks_df)
-instr_coverage_df_thirds = make_thirds_jit(instr_coverage_df)
-call_graph_df_thirds = make_thirds_jit(call_graph_df)
+cols = {
+    '$\\it{wei}$, jit-rt-int': '$\\it{wei}$, jit-rt-int',
+    '$\\it{wei}$, jit-rt-jit': '$\\it{wei}$, jit-rt-jit',
+    '$\\it{wei}$, jit-wasm-int': '$\\it{wei}$, jit-wasm-int',
+    '$\\it{wei}$, jit-wasm-jit': '$\\it{wei}$, jit-wasm-jit',
+    '$\\it{wei}$, inlined': '$\\it{wei}$, inlined',
+    'Whamm rewriting, jit': '$Whamm$ rewriting, jit'
+}
+
+branches_df_thirds = make_thirds_jit(branches_df, False, cols)
+hotness_df_thirds = make_thirds_jit(hotness_df, False, cols)
+icount_df_thirds = make_thirds_jit(icount_df, False, cols)
+imix_df_thirds = make_thirds_jit(imix_df, False, cols)
+cache_df_thirds = make_thirds_jit(cache_df, False, cols)
+mem_access_df_thirds = make_thirds_jit(mem_access_df, False, cols)
+loop_tracer_df_thirds = make_thirds_jit(loop_tracer_df, False, cols)
+basic_blocks_df_thirds = make_thirds_jit(basic_blocks_df, False, cols)
+instr_coverage_df_thirds = make_thirds_jit(instr_coverage_df, False, cols)
+call_graph_df_thirds = make_thirds_jit(call_graph_df, False, cols)
 
 # =======================
 # ==== PLOT THE DATA ====

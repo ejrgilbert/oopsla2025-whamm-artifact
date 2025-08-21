@@ -65,38 +65,42 @@ def make_thirds_int(all_df):
     })
     return all_df
 
-def group_jit(x):
+def group_jit_s(x):
+    if x["suite"] == "r3":
+        if x["time-jit"] < 0.30:
+            return 4
+        elif x["time-jit"] < 0.79:
+            return 5
+        else:
+            return 6
+    else:
+        if x["time-jit"] < 0.030:
+            return 1
+        elif x["time-jit"] < 0.06:
+            return 2
+        else:
+            return 3
+
+def group_jit_us(x):
     if x["suite"] == "r3":
         if x["time-jit"] < 1_000:
             return 4
-            time = "short"
         elif x["time-jit"] < 120_000:
             return 5
-            time = "medium"
         else:
             return 6
-            time = "long"
-        return f"r3-{time}"
     else:
         if x["time-jit"] < 20_000:
             return 1
-            time = "short"
         elif x["time-jit"] < 50_000:
             return 2
-            time = "medium"
         else:
             return 3
-            time = "long"
-        return f"poly-{time}"
 
-def make_thirds_jit(all_df):
-    all_df['group'] = all_df.apply(group_jit, axis=1)
-    all_df = all_df.rename(columns = {
-        '$\\it{wei}$, jit-rt-int': '$\\it{wei}$, jit-rt-int',
-        '$\\it{wei}$, jit-rt-jit': '$\\it{wei}$, jit-rt-jit',
-        '$\\it{wei}$, jit-wasm-int': '$\\it{wei}$, jit-wasm-int',
-        '$\\it{wei}$, jit-wasm-jit': '$\\it{wei}$, jit-wasm-jit',
-        '$\\it{wei}$, inlined': '$\\it{wei}$, inlined',
-        'Whamm rewriting, jit': '$Whamm$ rewriting, jit'
-    })
+def make_thirds_jit(all_df, in_s, cols):
+    if in_s:
+        all_df['group'] = all_df.apply(group_jit_s, axis=1)
+    else:
+        all_df['group'] = all_df.apply(group_jit_us, axis=1)
+    all_df = all_df.rename(columns = cols)
     return all_df
