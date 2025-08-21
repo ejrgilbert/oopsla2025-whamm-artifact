@@ -38,6 +38,9 @@ class RunMode(Enum):
     V8 = "v8"
     V8Prod = "v8-prod"
 
+    # For Pin:
+    Pin = "pin"
+
     def __str__(self):
         return self.value
     def invocation(self):
@@ -77,50 +80,60 @@ MONITORS= {
     'instr-coverage': "",
     'call-graph': f"(whamm_hw)call={mypath}/{whamm_utils}/call.wasm"
 }
+# map of monitor names as above to pintool names
+PINTOOLS = {
+    'icount': 'inscount0.so',
+    'imix': 'catmix.so',
+    'cache-sim': 'dcache.so',
+    'mem-access': 'pinatrace.so',
+}
 EXPS = {
-    'whamm_engine': [
-        RunMode.IntRtInt,
-        RunMode.JitRtInt,
-        RunMode.IntRtJit,
-        RunMode.JitRtJit,
-
-        RunMode.IntTrampInt,
-        RunMode.IntTrampJit,
-
-        RunMode.JitWasmInt,
-        RunMode.JitWasmJit,
-
-        RunMode.Inline,
-    ],
-    'whamm_rewrite': [
-        RunMode.IntDefault,
-        RunMode.JitDefault,
-    ],
-    'whamm_hw': [
-        RunMode.IntRtInt,
-        RunMode.JitRtInt,
-        RunMode.IntRtJit,
-        RunMode.JitRtJit,
-
-        RunMode.IntTrampInt,
-        RunMode.IntTrampJit,
-
-        RunMode.JitWasmInt,
-        RunMode.JitWasmJit,
-
-        RunMode.Inline,
-    ],
-    'wizard_native': [
-        RunMode.IntDefault,
-        RunMode.JitDefault
-    ],
-    'orca_rewrite': [
-        RunMode.IntDefault,
-        RunMode.JitDefault,
-    ],
-    'wasabi': [
-        RunMode.V8,
-        RunMode.V8Prod
+#     'whamm_engine': [
+#         RunMode.IntRtInt,
+#         RunMode.JitRtInt,
+#         RunMode.IntRtJit,
+#         RunMode.JitRtJit,
+# 
+#         RunMode.IntTrampInt,
+#         RunMode.IntTrampJit,
+# 
+#         RunMode.JitWasmInt,
+#         RunMode.JitWasmJit,
+# 
+#         RunMode.Inline,
+#     ],
+#     'whamm_rewrite': [
+#         RunMode.IntDefault,
+#         RunMode.JitDefault,
+#     ],
+#     'whamm_hw': [
+#         RunMode.IntRtInt,
+#         RunMode.JitRtInt,
+#         RunMode.IntRtJit,
+#         RunMode.JitRtJit,
+# 
+#         RunMode.IntTrampInt,
+#         RunMode.IntTrampJit,
+# 
+#         RunMode.JitWasmInt,
+#         RunMode.JitWasmJit,
+# 
+#         RunMode.Inline,
+#     ],
+#     'wizard_native': [
+#         RunMode.IntDefault,
+#         RunMode.JitDefault
+#     ],
+#     'orca_rewrite': [
+#         RunMode.IntDefault,
+#         RunMode.JitDefault,
+#     ],
+#     'wasabi': [
+#         RunMode.V8,
+#         RunMode.V8Prod
+#     ],
+    'pin': [
+        RunMode.Pin
     ]
 }
 
@@ -157,13 +170,16 @@ WASABI = os.path.join(mypath, f"{BIN}/wasabi/wasabi")
 WASABI_RUNNER = os.path.join(mypath, f"{BIN}/wasabi/run.js")
 WASABI_MON_PATH = os.path.join(mypath, f"{RSC}/monitors/wasabi/")
 
-# Output setup
+# Ouktput setup
 OUT = "../../out"
 COMPOUT = os.path.join(mypath, f"{OUT}/{ct}/compilations")
 ERROUT = os.path.join(mypath, f"{OUT}/{ct}/errors")
 OUTDIR = os.path.join(mypath, f"{OUT}/{ct}/results")
 OUTFILE = os.path.join(mypath, f"{OUT}/{ct}/results/{ct}.csv")
 
+# Pin setup
+PIN_BIN = os.path.join(mypath, f"{BIN}/pin-external-3.31-98869-gfa6f126a8-gcc-linux/pin")
+PINTOOL_DIR = os.path.join(mypath, f"{RSC}/monitors/pin/")
 
 class Result:
     def __init__(self,
@@ -900,6 +916,20 @@ def run_wasabi(ty, monitor, suite, app, unit, cfgs):
         # We just reuse the first slot of the unit here (naming is off, but who cares...)
         runN(f"{base_cmd} {unit.monitor_module}", result, False)
 
+def run_pin(name, monitor, suite, app, cfgs):
+    # only one cfg? ignore cfgs
+    result = Result(
+        "pin",
+        monitor,
+        name,
+        ConfigSpecial.NA,
+        suite,
+        app
+    )
+    # TODO make the call here
+
+
+
 def check_if_applicable(exp, lib):
     s = f"({exp})"
     match = re.match(r'^\([a-z_]*\)', lib);
@@ -988,6 +1018,16 @@ def handle_wasabi(monitor, _lib, cfgs):
             else: 
                 continue
 
+def handle_pin(monitor, _lib, cfgs):
+    # only one pin mode
+    if monitor not in PINTOOLS:
+        return
+    monitor = PINTOOLS[monitor]
+    for suite in SUITES:
+        for app in os.listdir(os.path.join(BENCHMARK_DIR, f"{suite}-mach")):
+            print(f"pin::{monitor} --> {app}", flush=True)
+            run_pin("pin", monitor, suite, app, cfgs)
+
 def run_exp(ty, cfgs):
     for monitor,lib in MONITORS.items():
         # NOTE: *remove* monitors can only be handled by the engine
@@ -1006,6 +1046,8 @@ def run_exp(ty, cfgs):
             handle_wizard_native(monitor, lib, cfgs)
         elif ty == 'wasabi':
             handle_wasabi(monitor, lib, cfgs)
+        elif ty == 'pin':
+            handle_pin(monitor, lib, cfgs)
         else:
             raise RuntimeError(f"incorrect type: {ty}")
 
@@ -1042,6 +1084,27 @@ def run_base_wasabi(name, options, suite, app):
     
     runN(f"{base_cmd} {app_path}", result, False)
 
+def run_base_pin(name, suite, app):
+    app_path = os.path.join(os.path.join(BENCHMARK_DIR, f"{suite}-mach"), app)
+
+    result_base = Result(name, "None", "base-run", ConfigSpecial.NA, suite, app)
+    result_base0 = Result(name, "None", "base-run0", ConfigSpecial.NA, suite, app)
+    result_base_pin = Result(name, "None", "base-run-pin", ConfigSpecial.NA, suite, app)
+    result_base_pin0 = Result(name, "None", "base-run0-pin", ConfigSpecial.NA, suite, app)
+
+    runN(app_path, result_base, False)
+    runN(f"{app_path}_ret0", result_base0, False)
+    runN(f"{PIN_BIN} -- {app_path}", result_base_pin, False)
+    runN(f"{PIN_BIN} -- {app_path}_ret0", result_base_pin0, False)
+
+def run_pin_uninstr():
+    for suite in SUITES:
+        for app in os.listdir(os.path.join(BENCHMARK_DIR, f"{suite}-mach")):
+            if app.endswith("ret0"):
+                continue
+            print(f"base_pin --> {app}", flush=True)
+            run_base_pin("pin", suite, app)
+
 def run_uninstr():
     for suite in SUITES:
         for app in os.listdir(os.path.join(BENCHMARK_DIR, suite)):
@@ -1066,6 +1129,7 @@ def run_uninstr():
 def main():
     if RUN_BASELINES:
         run_uninstr()
+        run_pin_uninstr()
     for ty,cfgs in EXPS.items():
         run_exp(ty,cfgs)
     print(f"Completed run, see output at: {OUTFILE}")
