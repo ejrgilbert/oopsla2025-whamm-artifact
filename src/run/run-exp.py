@@ -59,18 +59,21 @@ RUNS = 1
 RUN_TIMEOUT = 60 * 2 # 2 mins per run
 
 SUITES = [ 'polybench' ]
+RSC = "../../resources"
+whamm_mons = f"{RSC}/monitors/whamm/"
+whamm_utils = f"{whamm_mons}/utils/"
 MONITORS= {
     'branches': "",
     'hotness': "",
     'icount': "",
     'imix': "",
-    'cache-sim': "cache=../docker/whamm/user_libs/cache/target/wasm32-wasip1/release/cache.wasm",
+    'cache-sim': f"cache={whamm_utils}/cache.wasm",
 
-    'mem-access': "(whamm_hw)mem=../whamm_monitors/mem.wasm",
-    'loop-tracer': "tracer=../docker/whamm/user_libs/loop_tracer/tracer.wasm",
+    'mem-access': f"(whamm_hw)mem={whamm_utils}/mem.wasm",
+    'loop-tracer': f"tracer={whamm_utils}/tracer.wasm",
     'basic-blocks': "",
     'instr-coverage': "",
-    'call-graph': "(whamm_hw)call=../whamm_monitors/call.wasm"
+    'call-graph': f"(whamm_hw)call={whamm_utils}/call.wasm"
 }
 EXPS = {
     'whamm_engine': [
@@ -137,8 +140,9 @@ D8 = os.path.join(mypath, f"{BIN}/v8/out/x64.release/d8")
 
 # Whamm setup
 WHAMM_BIN = os.path.join(mypath, f"{BIN}/whamm/target/release/whamm")
-WHAMM_MON_PATH = os.path.join(mypath, f"{RSC}/monitors/whamm/")
-CORE_LIB = os.path.join(mypath, f"{BIN}/whamm/whamm_core/target/wasm32-wasip1/release/whamm_core.wasm")
+WHAMM_MM_PATH = os.path.join(mypath, f"{whamm_mons}/dsl/")
+WHAMM_HW_PATH = os.path.join(mypath, f"{whamm_mons}/hw/")
+CORE_LIB = os.path.join(mypath, f"{whamm_utils}/whamm_core.wasm")
 
 # Orca setup
 WIRM_REWRITER = os.path.join(mypath, f"{BIN}/rewriting-instrumenter/target/release/rewriting_monitor")
@@ -640,7 +644,7 @@ def run_cmd(cmd, extra_arg = "", with_timeout = False):
         return False, True
 
 def setup_whamm_engine(monitor, lib):
-    mm_script=os.path.join(WHAMM_MON_PATH, f"{monitor}.mm")
+    mm_script=os.path.join(WHAMM_MM_PATH, f"{monitor}.mm")
     compout_base=os.path.join(COMPOUT, f"whamm_engine/{monitor}/{monitor}-engine.wasm")
     compout_transfer=os.path.join(COMPOUT, f"whamm_engine/{monitor}/{monitor}-engine-calc_transfer.wasm")
 
@@ -669,7 +673,7 @@ def setup_whamm_engine(monitor, lib):
 def setup_whamm_rewrite(monitor, lib, suite, app):
     app_path = os.path.join(os.path.join(BENCHMARK_DIR, suite), app)
     app_name = Path(app_path).stem
-    mm_script=os.path.join(WHAMM_MON_PATH, f"{monitor}.mm")
+    mm_script=os.path.join(WHAMM_MM_PATH, f"{monitor}.mm")
     compout_base=os.path.join(COMPOUT, f"whamm_rewrite/{suite}/{monitor}/{monitor}-{app_name}-rewrite.wasm")
     compout_transfer=os.path.join(COMPOUT, f"whamm_rewrite/{suite}/{monitor}/{monitor}-rewrite-calc_transfer.wasm")
     compout_report=os.path.join(COMPOUT, f"whamm_rewrite/{suite}/{monitor}/{monitor}-rewrite-calc_report.wasm")
@@ -693,9 +697,9 @@ def setup_whamm_rewrite(monitor, lib, suite, app):
         return Compilation(f"{CORE_LIB} {libpath} {compout_base}", f"{CORE_LIB} {libpath} {compout_transfer}", f"{CORE_LIB} {libpath} {compout_report}")
 
 def setup_whamm_hw(monitor, lib):
-    compout_base=os.path.join(WHAMM_MON_PATH, f"{monitor}-hw.wasm")
-    compout_transfer=os.path.join(WHAMM_MON_PATH, f"{monitor}-hw-calc_transfer.wasm")
-    compout_report=os.path.join(WHAMM_MON_PATH, f"{monitor}-hw-calc_report.wasm")
+    compout_base=os.path.join(WHAMM_HW_PATH, f"{monitor}-hw.wasm")
+    compout_transfer=os.path.join(WHAMM_HW_PATH, f"{monitor}-hw-calc_transfer.wasm")
+    compout_report=os.path.join(WHAMM_HW_PATH, f"{monitor}-hw-calc_report.wasm")
 
     if lib == "":
         return Compilation(f"{compout_base}+{CORE_LIB}", f"{compout_transfer}+{CORE_LIB}", f"{compout_report}+{CORE_LIB}")
