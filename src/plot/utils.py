@@ -28,12 +28,10 @@ def clean(df, timeout_s):
     opts["wiz_metrics_whamm:report_time_us"] = opts["wiz_metrics_whamm:report_time_us"].replace("NONE", 0)
     opts["wiz_metrics_whamm:report_time_us"] = opts["wiz_metrics_whamm:report_time_us"].fillna(0)
 
-    # opts = opts[opts['config:special'].isna()]
     opts = opts[opts['config:experiment'].isin(['whamm_engine', 'base-run', 'whamm_rewrite'])]
-    df = opts[opts['benchmark:suite'] == 'polybench']
-    df = df.astype(column_dtypes)
+    df = opts.astype(column_dtypes)
 
-    # Check that there were no errors in the data set
+    # Check that there are no errors in the data set
     errored = opts[opts['run_errored'] == True]
     assert errored.empty, 'We had some errors!'
 

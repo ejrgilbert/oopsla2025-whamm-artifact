@@ -1068,7 +1068,7 @@ def main():
         run_uninstr()
     for ty,cfgs in EXPS.items():
         run_exp(ty,cfgs)
-    print(f"Completed run, see output at: {OUTFILE}")
+    print(f"Completed run, see output at: {OUTFILE}\ntimeout:{RUN_TIMEOUT}")
 
 if __name__=="__main__":
     main()

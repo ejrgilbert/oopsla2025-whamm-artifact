@@ -10,7 +10,7 @@ OUT = "../../out"
 
 # General setup
 if len(sys.argv) != 3:
-    print(f"Usage: whamm-opts_jit.py <timestamp> <used_timeout>\n\t<timestamp> used to identify results to plot in output directory at {OUT}\n\t<used_timeout> is the timeout used during the experiment run (in seconds)")
+    print(f"Usage: whamm-vs-fmks.py <timestamp> <used_timeout>\n\t<timestamp> used to identify results to plot in output directory at {OUT}\n\t<used_timeout> is the timeout used during the experiment run (in seconds)")
     sys.exit(1)
 timestamp = sys.argv[1]
 timeout_s = sys.argv[2]
