@@ -16,6 +16,9 @@ MNT_NAME="/eval"
 # Detect if running on a Mac
 if uname -m | grep "arm" >/dev/null; then
     arm_arg="--platform=linux/amd64"
+    user_opt="-f"
+else
+    user_opt='--printf'
 fi
 
 # Build the docker image
@@ -32,7 +35,7 @@ echo
 echo
 
 # Run the docker image (will implicitly run the experiments)
-if docker run "${arm_arg}" -u "$(stat -f "%u:%g" "$DIR")" -v "$PWD":$MNT_NAME $IMG_NAME "$@"; then
+if docker run "${arm_arg}" -u "$(stat ${user_opt} "%u:%g" "$DIR")" -v "$PWD":$MNT_NAME $IMG_NAME "$@"; then
     echo
     log_ok "Completed running the experiments, please see output at 'out/'"
 else
