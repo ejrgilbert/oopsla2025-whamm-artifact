@@ -1,0 +1,82 @@
+!<thin>
+//                                              1108      `
+v8_libbase/abort-mode.o/
+v8_libbase/bits.o/
+v8_libbase/bounded-page-allocator.o/
+v8_libbase/cpu.o/
+v8_libbase/stack_trace.o/
+v8_libbase/division-by-constant.o/
+v8_libbase/emulated-virtual-address-subspace.o/
+v8_libbase/file-utils.o/
+v8_libbase/fpu.o/
+v8_libbase/ieee754.o/
+v8_libbase/logging.o/
+v8_libbase/bignum-dtoa.o/
+v8_libbase/bignum.o/
+v8_libbase/cached-powers.o/
+v8_libbase/diy-fp.o/
+v8_libbase/dtoa.o/
+v8_libbase/fast-dtoa.o/
+v8_libbase/fixed-dtoa.o/
+v8_libbase/strtod.o/
+v8_libbase/once.o/
+v8_libbase/page-allocator.o/
+v8_libbase/condition-variable.o/
+v8_libbase/memory-protection-key.o/
+v8_libbase/mutex.o/
+v8_libbase/platform.o/
+v8_libbase/semaphore.o/
+v8_libbase/time.o/
+v8_libbase/region-allocator.o/
+v8_libbase/lsan-page-allocator.o/
+v8_libbase/lsan-virtual-address-space.o/
+v8_libbase/strings.o/
+v8_libbase/sys-info.o/
+v8_libbase/random-number-generator.o/
+v8_libbase/virtual-address-space-page-allocator.o/
+v8_libbase/virtual-address-space.o/
+v8_libbase/vlq-base64.o/
+v8_libbase/platform-posix.o/
+v8_libbase/platform-posix-time.o/
+v8_libbase/stack_trace_posix.o/
+v8_libbase/platform-linux.o/
+/0              0           0     0     644     776       `
+/25             0           0     0     644     3432      `
+/44             0           0     0     644     10544     `
+/81             0           0     0     644     2984      `
+/99             0           0     0     644     7224      `
+/125            0           0     0     644     4944      `
+/160            0           0     0     644     9416      `
+/208            0           0     0     644     1480      `
+/233            0           0     0     644     1248      `
+/251            0           0     0     644     44976     `
+/273            0           0     0     644     45968     `
+/295            0           0     0     644     5152      `
+/321            0           0     0     644     18912     `
+/342            0           0     0     644     3752      `
+/370            0           0     0     644     1096      `
+/391            0           0     0     644     1944      `
+/410            0           0     0     644     5384      `
+/434            0           0     0     644     5152      `
+/459            0           0     0     644     5360      `
+/480            0           0     0     644     1216      `
+/499            0           0     0     644     11648     `
+/528            0           0     0     644     2984      `
+/561            0           0     0     644     3424      `
+/597            0           0     0     644     3536      `
+/617            0           0     0     644     2440      `
+/640            0           0     0     644     3008      `
+/664            0           0     0     644     9864      `
+/683            0           0     0     644     20336     `
+/714            0           0     0     644     6960      `
+/748            0           0     0     644     6488      `
+/789            0           0     0     644     2248      `
+/811            0           0     0     644     2024      `
+/834            0           0     0     644     18528     `
+/872            0           0     0     644     12816     `
+/923            0           0     0     644     18224     `
+/959            0           0     0     644     1816      `
+/984            0           0     0     644     38152     `
+/1013           0           0     0     644     3272      `
+/1047           0           0     0     644     18344     `
+/1079           0           0     0     644     14800     `

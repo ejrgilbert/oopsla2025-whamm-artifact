@@ -1,0 +1,28 @@
+!<thin>
+//                                              478       `
+v8_libplatform/default-foreground-task-runner.o/
+v8_libplatform/default-job.o/
+v8_libplatform/default-platform.o/
+v8_libplatform/default-thread-isolated-allocator.o/
+v8_libplatform/default-worker-threads-task-runner.o/
+v8_libplatform/delayed-task-queue.o/
+v8_libplatform/task-queue.o/
+v8_libplatform/trace-buffer.o/
+v8_libplatform/trace-config.o/
+v8_libplatform/trace-object.o/
+v8_libplatform/trace-writer.o/
+v8_libplatform/tracing-controller.o/
+v8_libplatform/worker-thread.o/
+/0              0           0     0     644     43712     `
+/49             0           0     0     644     17112     `
+/79             0           0     0     644     29632     `
+/114            0           0     0     644     5072      `
+/166            0           0     0     644     16192     `
+/219            0           0     0     644     15600     `
+/256            0           0     0     644     12448     `
+/285            0           0     0     644     12832     `
+/316            0           0     0     644     11224     `
+/347            0           0     0     644     3456      `
+/378            0           0     0     644     17440     `
+/409            0           0     0     644     22848     `
+/446            0           0     0     644     3096      `

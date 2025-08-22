@@ -1,0 +1,10 @@
+!<thin>
+//                                              250       `
+allocator_shim/allocator_shim.o/
+allocator_shim/allocator_shim_dispatch_to_noop_on_free.o/
+allocator_shim/allocator_shim_default_dispatch_to_partition_alloc.o/
+allocator_shim/allocator_shim_default_dispatch_to_partition_alloc_with_advanced_checks.o/
+/0              0           0     0     644     22968     `
+/33             0           0     0     644     3640      `
+/91             0           0     0     644     115592    `
+/160            0           0     0     644     14552     `

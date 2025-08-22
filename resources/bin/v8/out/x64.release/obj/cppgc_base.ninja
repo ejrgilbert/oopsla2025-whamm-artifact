@@ -1,0 +1,154 @@
+defines = -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_OZONE=1 -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D_FORTIFY_SOURCE=2 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_GNU_SOURCE -DCR_CLANG_REVISION=\"llvmorg-21-init-1655-g7b473dfe-1\" -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE -D_LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS -D_LIBCXXABI_DISABLE_VISIBILITY_ANNOTATIONS -D_LIBCPP_INSTRUMENTED_WITH_ASAN=0 -DCR_LIBCXX_REVISION=be0bacb5427a393417db49182e2c18d58ee3c54e -DTMP_REBUILD_HACK -DCR_SYSROOT_KEY=20250129T203412Z-1 -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DV8_TYPED_ARRAY_MAX_SIZE_IN_HEAP=64 -DENABLE_DISASSEMBLER -DENABLE_GDB_JIT_INTERFACE -DOBJECT_PRINT -DVERIFY_HEAP -DV8_INTL_SUPPORT -DV8_USE_EXTERNAL_STARTUP_DATA -DV8_ATOMIC_OBJECT_FIELD_WRITES -DV8_ENABLE_LAZY_SOURCE_POSITIONS -DV8_WIN64_UNWINDING_INFO -DV8_ENABLE_REGEXP_INTERPRETER_THREADED_DISPATCH -DV8_ENABLE_FUZZTEST -DV8_SHORT_BUILTIN_CALLS -DV8_EXTERNAL_CODE_SPACE -DV8_ENABLE_SPARKPLUG -DV8_ENABLE_MAGLEV -DV8_ENABLE_TURBOFAN -DV8_ENABLE_WEBASSEMBLY -DV8_ENABLE_CONTINUATION_PRESERVED_EMBEDDER_DATA -DV8_ALLOCATION_FOLDING -DV8_ALLOCATION_SITE_TRACKING -DV8_ADVANCED_BIGINT_ALGORITHMS -DV8_STATIC_ROOTS -DV8_USE_ZLIB -DV8_USE_LIBM_TRIG_FUNCTIONS -DV8_ENABLE_WASM_SIMD256_REVEC -DV8_ENABLE_MAGLEV_GRAPH_PRINTER -DV8_ENABLE_BUILTIN_JUMP_TABLE_SWITCH -DV8_ENABLE_EXTENSIBLE_RO_SNAPSHOT -DV8_ENABLE_BLACK_ALLOCATED_PAGES -DV8_ENABLE_LEAPTIERING -DV8_WASM_RANDOM_FUZZERS -DV8_ARRAY_BUFFER_INTERNAL_FIELD_COUNT=0 -DV8_ARRAY_BUFFER_VIEW_INTERNAL_FIELD_COUNT=0 -DV8_PROMISE_INTERNAL_FIELD_COUNT=0 -DV8_COMPRESS_POINTERS -DV8_COMPRESS_POINTERS_IN_SHARED_CAGE -DV8_31BIT_SMIS_ON_64BIT_ARCH -DV8_ENABLE_SANDBOX -DV8_DEPRECATION_WARNINGS -DV8_IMMINENT_DEPRECATION_WARNINGS -DV8_HAVE_TARGET_OS -DV8_TARGET_OS_LINUX -DCPPGC_CAGED_HEAP -DCPPGC_YOUNG_GENERATION -DCPPGC_POINTER_COMPRESSION -DCPPGC_ENABLE_LARGER_CAGE -DCPPGC_SLIM_WRITE_BARRIER -DV8_TARGET_ARCH_X64 -DV8_RUNTIME_CALL_STATS -DABSL_ALLOCATOR_NOTHROW=1
+include_dirs = -I../.. -Igen -I../../buildtools/third_party/libc++ -I../../include -I../../third_party/abseil-cpp
+cflags = -Wall -Wextra -Wimplicit-fallthrough -Wextra-semi -Wunreachable-code-aggressive -Wthread-safety -Wgnu -Wno-gnu-anonymous-struct -Wno-gnu-conditional-omitted-operand -Wno-gnu-include-next -Wno-gnu-label-as-value -Wno-gnu-redeclared-enum -Wno-gnu-statement-expression -Wno-gnu-zero-variadic-macro-arguments -Wno-zero-length-array -Wno-missing-field-initializers -Wno-unused-parameter -Wno-psabi -Wloop-analysis -Wno-unneeded-internal-declaration -Wno-cast-function-type -Wno-thread-safety-reference-return -Wno-nontrivial-memcall -Wshadow -Werror -fno-delete-null-pointer-checks -fno-strict-overflow -fno-ident -fno-strict-aliasing -fstack-protector -funwind-tables -fPIC -pthread -fcolor-diagnostics -fmerge-all-constants -fno-sized-deallocation -fcrash-diagnostics-dir=../../tools/clang/crashreports -mllvm -instcombine-lower-dbg-declare=0 -mllvm -split-threshold-for-reg-with-hint=0 -ffp-contract=off -Wa,--crel,--allow-experimental-crel -fcomplete-member-pointers -m64 -msse3 -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -ffile-compilation-dir=. -no-canonical-prefixes -fno-omit-frame-pointer -g0 -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Wunreachable-code -Wctad-maybe-unsupported -Wno-invalid-offsetof -Wshorten-64-to-32 -Wmissing-field-initializers -O3 -fdata-sections -ffunction-sections -fno-unique-section-names -fno-math-errno -fvisibility=default -Wexit-time-destructors
+cflags_cc = -Wno-invalid-offsetof -Wenum-compare-conditional -Wno-c++11-narrowing-const-reference -Wno-missing-template-arg-list-after-template-kw -std=c++20 -Wno-trigraphs -gsimple-template-names -fno-exceptions -fno-rtti -nostdinc++ -isystem../../third_party/libc++/src/include -isystem../../third_party/libc++abi/src/include --sysroot=../../build/linux/debian_bullseye_amd64-sysroot
+label_name = cppgc_base
+target_out_dir = obj
+target_output_name = cppgc_base
+
+build obj/cppgc_base/allocation.o: cxx ../../src/heap/cppgc/allocation.cc || phony/build/chromeos_buildflags
+  source_file_part = allocation.cc
+  source_name_part = allocation
+build obj/cppgc_base/compaction-worklists.o: cxx ../../src/heap/cppgc/compaction-worklists.cc || phony/build/chromeos_buildflags
+  source_file_part = compaction-worklists.cc
+  source_name_part = compaction-worklists
+build obj/cppgc_base/compactor.o: cxx ../../src/heap/cppgc/compactor.cc || phony/build/chromeos_buildflags
+  source_file_part = compactor.cc
+  source_name_part = compactor
+build obj/cppgc_base/concurrent-marker.o: cxx ../../src/heap/cppgc/concurrent-marker.cc || phony/build/chromeos_buildflags
+  source_file_part = concurrent-marker.cc
+  source_name_part = concurrent-marker
+build obj/cppgc_base/explicit-management.o: cxx ../../src/heap/cppgc/explicit-management.cc || phony/build/chromeos_buildflags
+  source_file_part = explicit-management.cc
+  source_name_part = explicit-management
+build obj/cppgc_base/free-list.o: cxx ../../src/heap/cppgc/free-list.cc || phony/build/chromeos_buildflags
+  source_file_part = free-list.cc
+  source_name_part = free-list
+build obj/cppgc_base/gc-info-table.o: cxx ../../src/heap/cppgc/gc-info-table.cc || phony/build/chromeos_buildflags
+  source_file_part = gc-info-table.cc
+  source_name_part = gc-info-table
+build obj/cppgc_base/gc-info.o: cxx ../../src/heap/cppgc/gc-info.cc || phony/build/chromeos_buildflags
+  source_file_part = gc-info.cc
+  source_name_part = gc-info
+build obj/cppgc_base/gc-invoker.o: cxx ../../src/heap/cppgc/gc-invoker.cc || phony/build/chromeos_buildflags
+  source_file_part = gc-invoker.cc
+  source_name_part = gc-invoker
+build obj/cppgc_base/heap-base.o: cxx ../../src/heap/cppgc/heap-base.cc || phony/build/chromeos_buildflags
+  source_file_part = heap-base.cc
+  source_name_part = heap-base
+build obj/cppgc_base/heap-consistency.o: cxx ../../src/heap/cppgc/heap-consistency.cc || phony/build/chromeos_buildflags
+  source_file_part = heap-consistency.cc
+  source_name_part = heap-consistency
+build obj/cppgc_base/heap-growing.o: cxx ../../src/heap/cppgc/heap-growing.cc || phony/build/chromeos_buildflags
+  source_file_part = heap-growing.cc
+  source_name_part = heap-growing
+build obj/cppgc_base/heap-object-header.o: cxx ../../src/heap/cppgc/heap-object-header.cc || phony/build/chromeos_buildflags
+  source_file_part = heap-object-header.cc
+  source_name_part = heap-object-header
+build obj/cppgc_base/heap-page.o: cxx ../../src/heap/cppgc/heap-page.cc || phony/build/chromeos_buildflags
+  source_file_part = heap-page.cc
+  source_name_part = heap-page
+build obj/cppgc_base/heap-space.o: cxx ../../src/heap/cppgc/heap-space.cc || phony/build/chromeos_buildflags
+  source_file_part = heap-space.cc
+  source_name_part = heap-space
+build obj/cppgc_base/heap-state.o: cxx ../../src/heap/cppgc/heap-state.cc || phony/build/chromeos_buildflags
+  source_file_part = heap-state.cc
+  source_name_part = heap-state
+build obj/cppgc_base/heap-statistics-collector.o: cxx ../../src/heap/cppgc/heap-statistics-collector.cc || phony/build/chromeos_buildflags
+  source_file_part = heap-statistics-collector.cc
+  source_name_part = heap-statistics-collector
+build obj/cppgc_base/heap.o: cxx ../../src/heap/cppgc/heap.cc || phony/build/chromeos_buildflags
+  source_file_part = heap.cc
+  source_name_part = heap
+build obj/cppgc_base/liveness-broker.o: cxx ../../src/heap/cppgc/liveness-broker.cc || phony/build/chromeos_buildflags
+  source_file_part = liveness-broker.cc
+  source_name_part = liveness-broker
+build obj/cppgc_base/logging.o: cxx ../../src/heap/cppgc/logging.cc || phony/build/chromeos_buildflags
+  source_file_part = logging.cc
+  source_name_part = logging
+build obj/cppgc_base/marker.o: cxx ../../src/heap/cppgc/marker.cc || phony/build/chromeos_buildflags
+  source_file_part = marker.cc
+  source_name_part = marker
+build obj/cppgc_base/marking-state.o: cxx ../../src/heap/cppgc/marking-state.cc || phony/build/chromeos_buildflags
+  source_file_part = marking-state.cc
+  source_name_part = marking-state
+build obj/cppgc_base/marking-verifier.o: cxx ../../src/heap/cppgc/marking-verifier.cc || phony/build/chromeos_buildflags
+  source_file_part = marking-verifier.cc
+  source_name_part = marking-verifier
+build obj/cppgc_base/marking-visitor.o: cxx ../../src/heap/cppgc/marking-visitor.cc || phony/build/chromeos_buildflags
+  source_file_part = marking-visitor.cc
+  source_name_part = marking-visitor
+build obj/cppgc_base/marking-worklists.o: cxx ../../src/heap/cppgc/marking-worklists.cc || phony/build/chromeos_buildflags
+  source_file_part = marking-worklists.cc
+  source_name_part = marking-worklists
+build obj/cppgc_base/member-storage.o: cxx ../../src/heap/cppgc/member-storage.cc || phony/build/chromeos_buildflags
+  source_file_part = member-storage.cc
+  source_name_part = member-storage
+build obj/cppgc_base/memory.o: cxx ../../src/heap/cppgc/memory.cc || phony/build/chromeos_buildflags
+  source_file_part = memory.cc
+  source_name_part = memory
+build obj/cppgc_base/name-trait.o: cxx ../../src/heap/cppgc/name-trait.cc || phony/build/chromeos_buildflags
+  source_file_part = name-trait.cc
+  source_name_part = name-trait
+build obj/cppgc_base/object-allocator.o: cxx ../../src/heap/cppgc/object-allocator.cc || phony/build/chromeos_buildflags
+  source_file_part = object-allocator.cc
+  source_name_part = object-allocator
+build obj/cppgc_base/object-size-trait.o: cxx ../../src/heap/cppgc/object-size-trait.cc || phony/build/chromeos_buildflags
+  source_file_part = object-size-trait.cc
+  source_name_part = object-size-trait
+build obj/cppgc_base/page-memory.o: cxx ../../src/heap/cppgc/page-memory.cc || phony/build/chromeos_buildflags
+  source_file_part = page-memory.cc
+  source_name_part = page-memory
+build obj/cppgc_base/persistent-node.o: cxx ../../src/heap/cppgc/persistent-node.cc || phony/build/chromeos_buildflags
+  source_file_part = persistent-node.cc
+  source_name_part = persistent-node
+build obj/cppgc_base/platform.o: cxx ../../src/heap/cppgc/platform.cc || phony/build/chromeos_buildflags
+  source_file_part = platform.cc
+  source_name_part = platform
+build obj/cppgc_base/pointer-policies.o: cxx ../../src/heap/cppgc/pointer-policies.cc || phony/build/chromeos_buildflags
+  source_file_part = pointer-policies.cc
+  source_name_part = pointer-policies
+build obj/cppgc_base/prefinalizer-handler.o: cxx ../../src/heap/cppgc/prefinalizer-handler.cc || phony/build/chromeos_buildflags
+  source_file_part = prefinalizer-handler.cc
+  source_name_part = prefinalizer-handler
+build obj/cppgc_base/process-heap-statistics.o: cxx ../../src/heap/cppgc/process-heap-statistics.cc || phony/build/chromeos_buildflags
+  source_file_part = process-heap-statistics.cc
+  source_name_part = process-heap-statistics
+build obj/cppgc_base/process-heap.o: cxx ../../src/heap/cppgc/process-heap.cc || phony/build/chromeos_buildflags
+  source_file_part = process-heap.cc
+  source_name_part = process-heap
+build obj/cppgc_base/raw-heap.o: cxx ../../src/heap/cppgc/raw-heap.cc || phony/build/chromeos_buildflags
+  source_file_part = raw-heap.cc
+  source_name_part = raw-heap
+build obj/cppgc_base/remembered-set.o: cxx ../../src/heap/cppgc/remembered-set.cc || phony/build/chromeos_buildflags
+  source_file_part = remembered-set.cc
+  source_name_part = remembered-set
+build obj/cppgc_base/stats-collector.o: cxx ../../src/heap/cppgc/stats-collector.cc || phony/build/chromeos_buildflags
+  source_file_part = stats-collector.cc
+  source_name_part = stats-collector
+build obj/cppgc_base/sweeper.o: cxx ../../src/heap/cppgc/sweeper.cc || phony/build/chromeos_buildflags
+  source_file_part = sweeper.cc
+  source_name_part = sweeper
+build obj/cppgc_base/testing.o: cxx ../../src/heap/cppgc/testing.cc || phony/build/chromeos_buildflags
+  source_file_part = testing.cc
+  source_name_part = testing
+build obj/cppgc_base/trace-trait.o: cxx ../../src/heap/cppgc/trace-trait.cc || phony/build/chromeos_buildflags
+  source_file_part = trace-trait.cc
+  source_name_part = trace-trait
+build obj/cppgc_base/virtual-memory.o: cxx ../../src/heap/cppgc/virtual-memory.cc || phony/build/chromeos_buildflags
+  source_file_part = virtual-memory.cc
+  source_name_part = virtual-memory
+build obj/cppgc_base/visitor.o: cxx ../../src/heap/cppgc/visitor.cc || phony/build/chromeos_buildflags
+  source_file_part = visitor.cc
+  source_name_part = visitor
+build obj/cppgc_base/write-barrier.o: cxx ../../src/heap/cppgc/write-barrier.cc || phony/build/chromeos_buildflags
+  source_file_part = write-barrier.cc
+  source_name_part = write-barrier
+build obj/cppgc_base/caged-heap-local-data.o: cxx ../../src/heap/cppgc/caged-heap-local-data.cc || phony/build/chromeos_buildflags
+  source_file_part = caged-heap-local-data.cc
+  source_name_part = caged-heap-local-data
+build obj/cppgc_base/caged-heap.o: cxx ../../src/heap/cppgc/caged-heap.cc || phony/build/chromeos_buildflags
+  source_file_part = caged-heap.cc
+  source_name_part = caged-heap
+
+build phony/cppgc_base: phony obj/cppgc_base/allocation.o obj/cppgc_base/compaction-worklists.o obj/cppgc_base/compactor.o obj/cppgc_base/concurrent-marker.o obj/cppgc_base/explicit-management.o obj/cppgc_base/free-list.o obj/cppgc_base/gc-info-table.o obj/cppgc_base/gc-info.o obj/cppgc_base/gc-invoker.o obj/cppgc_base/heap-base.o obj/cppgc_base/heap-consistency.o obj/cppgc_base/heap-growing.o obj/cppgc_base/heap-object-header.o obj/cppgc_base/heap-page.o obj/cppgc_base/heap-space.o obj/cppgc_base/heap-state.o obj/cppgc_base/heap-statistics-collector.o obj/cppgc_base/heap.o obj/cppgc_base/liveness-broker.o obj/cppgc_base/logging.o obj/cppgc_base/marker.o obj/cppgc_base/marking-state.o obj/cppgc_base/marking-verifier.o obj/cppgc_base/marking-visitor.o obj/cppgc_base/marking-worklists.o obj/cppgc_base/member-storage.o obj/cppgc_base/memory.o obj/cppgc_base/name-trait.o obj/cppgc_base/object-allocator.o obj/cppgc_base/object-size-trait.o obj/cppgc_base/page-memory.o obj/cppgc_base/persistent-node.o obj/cppgc_base/platform.o obj/cppgc_base/pointer-policies.o obj/cppgc_base/prefinalizer-handler.o obj/cppgc_base/process-heap-statistics.o obj/cppgc_base/process-heap.o obj/cppgc_base/raw-heap.o obj/cppgc_base/remembered-set.o obj/cppgc_base/stats-collector.o obj/cppgc_base/sweeper.o obj/cppgc_base/testing.o obj/cppgc_base/trace-trait.o obj/cppgc_base/virtual-memory.o obj/cppgc_base/visitor.o obj/cppgc_base/write-barrier.o obj/cppgc_base/caged-heap-local-data.o obj/cppgc_base/caged-heap.o || phony/cppgc_headers phony/v8_heap_base obj/libv8_libbase.a obj/libv8_libplatform.a phony/third_party/abseil-cpp/absl phony/third_party/abseil-cpp/absl/base/base phony/third_party/abseil-cpp/absl/base/log_severity phony/third_party/abseil-cpp/absl/base/raw_logging_internal phony/third_party/abseil-cpp/absl/base/spinlock_wait phony/third_party/abseil-cpp/absl/container/btree phony/third_party/abseil-cpp/absl/container/layout phony/third_party/abseil-cpp/absl/debugging/demangle_internal phony/third_party/abseil-cpp/absl/debugging/demangle_rust phony/third_party/abseil-cpp/absl/debugging/decode_rust_punycode phony/third_party/abseil-cpp/absl/debugging/utf8_for_code_point phony/third_party/abseil-cpp/absl/strings/strings phony/third_party/abseil-cpp/absl/strings/string_view phony/third_party/abseil-cpp/absl/base/throw_delegate phony/third_party/abseil-cpp/absl/strings/charset phony/third_party/abseil-cpp/absl/strings/internal phony/third_party/abseil-cpp/absl/base/endian phony/third_party/abseil-cpp/absl/numeric/int128 phony/third_party/abseil-cpp/absl/types/span phony/third_party/abseil-cpp/absl/strings/cord phony/third_party/abseil-cpp/absl/strings/cord_internal phony/third_party/abseil-cpp/absl/container/inlined_vector phony/third_party/abseil-cpp/absl/container/inlined_vector_internal phony/third_party/abseil-cpp/absl/crc/crc_cord_state phony/third_party/abseil-cpp/absl/crc/crc32c phony/third_party/abseil-cpp/absl/crc/cpu_detect phony/third_party/abseil-cpp/absl/crc/crc_internal phony/third_party/abseil-cpp/absl/strings/str_format phony/third_party/abseil-cpp/absl/strings/str_format_internal phony/third_party/abseil-cpp/absl/container/fixed_array phony/third_party/abseil-cpp/absl/strings/cordz_info phony/third_party/abseil-cpp/absl/strings/cordz_functions phony/third_party/abseil-cpp/absl/profiling/exponential_biased phony/third_party/abseil-cpp/absl/strings/cordz_handle phony/third_party/abseil-cpp/absl/synchronization/synchronization phony/third_party/abseil-cpp/absl/synchronization/graphcycles_internal phony/third_party/abseil-cpp/absl/base/malloc_internal phony/third_party/abseil-cpp/absl/synchronization/kernel_timeout_internal phony/third_party/abseil-cpp/absl/time/time phony/third_party/abseil-cpp/absl/time/internal/cctz/civil_time phony/third_party/abseil-cpp/absl/time/internal/cctz/time_zone phony/third_party/abseil-cpp/absl/base/tracing_internal phony/third_party/abseil-cpp/absl/debugging/stacktrace phony/third_party/abseil-cpp/absl/debugging/debugging_internal phony/third_party/abseil-cpp/absl/debugging/symbolize phony/third_party/abseil-cpp/absl/strings/cordz_update_scope phony/third_party/abseil-cpp/absl/container/flat_hash_map phony/third_party/abseil-cpp/absl/container/hash_container_defaults phony/third_party/abseil-cpp/absl/container/hash_function_defaults phony/third_party/abseil-cpp/absl/hash/hash phony/third_party/abseil-cpp/absl/hash/city phony/third_party/abseil-cpp/absl/hash/low_level_hash phony/third_party/abseil-cpp/absl/types/variant phony/third_party/abseil-cpp/absl/types/bad_variant_access phony/third_party/abseil-cpp/absl/container/raw_hash_map phony/third_party/abseil-cpp/absl/container/raw_hash_set phony/third_party/abseil-cpp/absl/container/hashtable_control_bytes phony/third_party/abseil-cpp/absl/container/hashtablez_sampler phony/third_party/abseil-cpp/absl/profiling/sample_recorder phony/third_party/abseil-cpp/absl/container/flat_hash_set phony/third_party/abseil-cpp/absl/container/node_hash_map phony/third_party/abseil-cpp/absl/container/node_hash_set phony/third_party/abseil-cpp/absl/debugging/failure_signal_handler phony/third_party/abseil-cpp/absl/debugging/examine_stack phony/third_party/abseil-cpp/absl/log/absl_check phony/third_party/abseil-cpp/absl/log/internal/check_impl phony/third_party/abseil-cpp/absl/log/internal/check_op phony/third_party/abseil-cpp/absl/log/internal/nullguard phony/third_party/abseil-cpp/absl/log/internal/nullstream phony/third_party/abseil-cpp/absl/log/internal/strip phony/third_party/abseil-cpp/absl/log/internal/log_message phony/third_party/abseil-cpp/absl/log/internal/append_truncated phony/third_party/abseil-cpp/absl/log/internal/format phony/third_party/abseil-cpp/absl/log/internal/globals phony/third_party/abseil-cpp/absl/log/internal/log_sink_set phony/third_party/abseil-cpp/absl/log/globals phony/third_party/abseil-cpp/absl/log/internal/vlog_config phony/third_party/abseil-cpp/absl/log/internal/fnmatch phony/third_party/abseil-cpp/absl/log/log_entry phony/third_party/abseil-cpp/absl/log/log_sink phony/third_party/abseil-cpp/absl/log/internal/proto phony/third_party/abseil-cpp/absl/log/internal/structured_proto phony/third_party/abseil-cpp/absl/base/strerror phony/third_party/abseil-cpp/absl/log/log_sink_registry phony/third_party/abseil-cpp/absl/debugging/leak_check phony/third_party/abseil-cpp/absl/log/internal/conditions phony/third_party/abseil-cpp/absl/log/absl_log phony/third_party/abseil-cpp/absl/log/internal/log_impl phony/third_party/abseil-cpp/absl/log/absl_vlog_is_on phony/third_party/abseil-cpp/absl/log/die_if_null phony/third_party/abseil-cpp/absl/log/log phony/third_party/abseil-cpp/absl/log/vlog_is_on phony/third_party/abseil-cpp/absl/log/initialize phony/third_party/abseil-cpp/absl/random/random phony/third_party/abseil-cpp/absl/random/distributions phony/third_party/abseil-cpp/absl/random/internal/fast_uniform_bits phony/third_party/abseil-cpp/absl/random/internal/traits phony/third_party/abseil-cpp/absl/random/internal/generate_real phony/third_party/abseil-cpp/absl/random/internal/iostream_state_saver phony/third_party/abseil-cpp/absl/random/internal/uniform_helper phony/third_party/abseil-cpp/absl/random/internal/wide_multiply phony/third_party/abseil-cpp/absl/random/seed_sequences phony/third_party/abseil-cpp/absl/random/seed_gen_exception phony/third_party/abseil-cpp/absl/random/internal/pool_urbg phony/third_party/abseil-cpp/absl/random/internal/randen phony/third_party/abseil-cpp/absl/random/internal/platform phony/third_party/abseil-cpp/absl/random/internal/randen_hwaes phony/third_party/abseil-cpp/absl/random/internal/randen_hwaes_impl phony/third_party/abseil-cpp/absl/random/internal/randen_slow phony/third_party/abseil-cpp/absl/random/internal/seed_material phony/third_party/abseil-cpp/absl/random/internal/salted_seed_seq phony/third_party/abseil-cpp/absl/random/internal/nonsecure_base phony/third_party/abseil-cpp/absl/random/internal/pcg_engine phony/third_party/abseil-cpp/absl/random/internal/randen_engine phony/third_party/abseil-cpp/absl/random/bit_gen_ref phony/third_party/abseil-cpp/absl/status/status phony/third_party/abseil-cpp/absl/status/statusor phony/libm phony/v8_heap_base_headers

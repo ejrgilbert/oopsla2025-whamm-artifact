@@ -1,0 +1,32 @@
+!<thin>
+//                                              238       `
+zlib/adler32.o/
+zlib/compress.o/
+zlib/cpu_features.o/
+zlib/crc32.o/
+zlib/deflate.o/
+zlib/gzclose.o/
+zlib/gzlib.o/
+zlib/gzread.o/
+zlib/gzwrite.o/
+zlib/infback.o/
+zlib/inffast.o/
+zlib/inftrees.o/
+zlib/trees.o/
+zlib/uncompr.o/
+zlib/zutil.o/
+/0              0           0     0     644     3312      `
+/16             0           0     0     644     2560      `
+/33             0           0     0     644     2384      `
+/54             0           0     0     644     16776     `
+/68             0           0     0     644     25448     `
+/84             0           0     0     644     1104      `
+/100            0           0     0     644     7712      `
+/114            0           0     0     644     8808      `
+/129            0           0     0     644     8248      `
+/145            0           0     0     644     10456     `
+/161            0           0     0     644     4024      `
+/177            0           0     0     644     4112      `
+/194            0           0     0     644     16912     `
+/208            0           0     0     644     2152      `
+/224            0           0     0     644     2536      `

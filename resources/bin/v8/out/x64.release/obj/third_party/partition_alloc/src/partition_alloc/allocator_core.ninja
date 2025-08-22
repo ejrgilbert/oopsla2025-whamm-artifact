@@ -1,0 +1,115 @@
+defines = -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_OZONE=1 -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D_FORTIFY_SOURCE=2 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_GNU_SOURCE -DCR_CLANG_REVISION=\"llvmorg-21-init-1655-g7b473dfe-1\" -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE -D_LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS -D_LIBCXXABI_DISABLE_VISIBILITY_ANNOTATIONS -D_LIBCPP_INSTRUMENTED_WITH_ASAN=0 -DCR_LIBCXX_REVISION=be0bacb5427a393417db49182e2c18d58ee3c54e -DTMP_REBUILD_HACK -DCR_SYSROOT_KEY=20250129T203412Z-1 -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DIS_PARTITION_ALLOC_IMPL
+include_dirs = -I../.. -Igen -I../../buildtools/third_party/libc++ -I../../third_party/partition_alloc/src -Igen/third_party/partition_alloc/src
+cflags = -Wall -Wextra -Wimplicit-fallthrough -Wextra-semi -Wunreachable-code-aggressive -Wthread-safety -Wgnu -Wno-gnu-anonymous-struct -Wno-gnu-conditional-omitted-operand -Wno-gnu-include-next -Wno-gnu-label-as-value -Wno-gnu-redeclared-enum -Wno-gnu-statement-expression -Wno-gnu-zero-variadic-macro-arguments -Wno-zero-length-array -Wno-missing-field-initializers -Wno-unused-parameter -Wno-psabi -Wloop-analysis -Wno-unneeded-internal-declaration -Wno-cast-function-type -Wno-thread-safety-reference-return -Wno-nontrivial-memcall -Wshadow -Werror -fno-delete-null-pointer-checks -fno-strict-overflow -fno-ident -fno-strict-aliasing -fstack-protector -funwind-tables -fPIC -pthread -fcolor-diagnostics -fmerge-all-constants -fno-sized-deallocation -fcrash-diagnostics-dir=../../tools/clang/crashreports -mllvm -instcombine-lower-dbg-declare=0 -mllvm -split-threshold-for-reg-with-hint=0 -ffp-contract=off -Wa,--crel,--allow-experimental-crel -fcomplete-member-pointers -m64 -msse3 -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -ffile-compilation-dir=. -no-canonical-prefixes -ftrivial-auto-var-init=pattern -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Xclang -add-plugin -Xclang find-bad-constructs -Xclang -plugin-arg-find-bad-constructs -Xclang span-ctor-from-string-literal -Xclang -plugin-arg-find-bad-constructs -Xclang raw-ref-template-as-trivial-member -Xclang -plugin-arg-find-bad-constructs -Xclang raw-span-template-as-trivial-member -Xclang -plugin-arg-find-bad-constructs -Xclang check-stack-allocated -Xclang -plugin-arg-find-bad-constructs -Xclang check-ipc -Xclang -add-plugin -Xclang raw-ptr-plugin -Xclang -plugin-arg-raw-ptr-plugin -Xclang check-raw-ptr-to-stack-allocated -Xclang -plugin-arg-raw-ptr-plugin -Xclang disable-check-raw-ptr-to-stack-allocated-error -Xclang -plugin-arg-raw-ptr-plugin -Xclang raw-ptr-exclude-path=../../third_party/dawn/ -Wexit-time-destructors -O3 -fdata-sections -ffunction-sections -fno-unique-section-names -fno-math-errno
+cflags_cc = -Wno-invalid-offsetof -Wenum-compare-conditional -Wno-c++11-narrowing-const-reference -Wno-missing-template-arg-list-after-template-kw -std=c++20 -Wno-trigraphs -gsimple-template-names -fno-exceptions -fno-rtti -nostdinc++ -isystem../../third_party/libc++/src/include -isystem../../third_party/libc++abi/src/include --sysroot=../../build/linux/debian_bullseye_amd64-sysroot -fvisibility-inlines-hidden
+label_name = allocator_core
+target_out_dir = obj/third_party/partition_alloc/src/partition_alloc
+target_output_name = liballocator_core
+
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/address_pool_manager.o: cxx ../../third_party/partition_alloc/src/partition_alloc/address_pool_manager.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = address_pool_manager.cc
+  source_name_part = address_pool_manager
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/address_pool_manager_bitmap.o: cxx ../../third_party/partition_alloc/src/partition_alloc/address_pool_manager_bitmap.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = address_pool_manager_bitmap.cc
+  source_name_part = address_pool_manager_bitmap
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/address_space_randomization.o: cxx ../../third_party/partition_alloc/src/partition_alloc/address_space_randomization.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = address_space_randomization.cc
+  source_name_part = address_space_randomization
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/allocation_guard.o: cxx ../../third_party/partition_alloc/src/partition_alloc/allocation_guard.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = allocation_guard.cc
+  source_name_part = allocation_guard
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/compressed_pointer.o: cxx ../../third_party/partition_alloc/src/partition_alloc/compressed_pointer.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = compressed_pointer.cc
+  source_name_part = compressed_pointer
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/dangling_raw_ptr_checks.o: cxx ../../third_party/partition_alloc/src/partition_alloc/dangling_raw_ptr_checks.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = dangling_raw_ptr_checks.cc
+  source_name_part = dangling_raw_ptr_checks
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/gwp_asan_support.o: cxx ../../third_party/partition_alloc/src/partition_alloc/gwp_asan_support.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = gwp_asan_support.cc
+  source_name_part = gwp_asan_support
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/internal_allocator.o: cxx ../../third_party/partition_alloc/src/partition_alloc/internal_allocator.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = internal_allocator.cc
+  source_name_part = internal_allocator
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/lightweight_quarantine.o: cxx ../../third_party/partition_alloc/src/partition_alloc/lightweight_quarantine.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = lightweight_quarantine.cc
+  source_name_part = lightweight_quarantine
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/memory_reclaimer.o: cxx ../../third_party/partition_alloc/src/partition_alloc/memory_reclaimer.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = memory_reclaimer.cc
+  source_name_part = memory_reclaimer
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/oom.o: cxx ../../third_party/partition_alloc/src/partition_alloc/oom.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = oom.cc
+  source_name_part = oom
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/oom_callback.o: cxx ../../third_party/partition_alloc/src/partition_alloc/oom_callback.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = oom_callback.cc
+  source_name_part = oom_callback
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/page_allocator.o: cxx ../../third_party/partition_alloc/src/partition_alloc/page_allocator.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = page_allocator.cc
+  source_name_part = page_allocator
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_address_space.o: cxx ../../third_party/partition_alloc/src/partition_alloc/partition_address_space.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = partition_address_space.cc
+  source_name_part = partition_address_space
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_alloc.o: cxx ../../third_party/partition_alloc/src/partition_alloc/partition_alloc.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = partition_alloc.cc
+  source_name_part = partition_alloc
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_alloc_hooks.o: cxx ../../third_party/partition_alloc/src/partition_alloc/partition_alloc_hooks.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = partition_alloc_hooks.cc
+  source_name_part = partition_alloc_hooks
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_bucket.o: cxx ../../third_party/partition_alloc/src/partition_alloc/partition_bucket.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = partition_bucket.cc
+  source_name_part = partition_bucket
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_cookie.o: cxx ../../third_party/partition_alloc/src/partition_alloc/partition_cookie.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = partition_cookie.cc
+  source_name_part = partition_cookie
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_dcheck_helper.o: cxx ../../third_party/partition_alloc/src/partition_alloc/partition_dcheck_helper.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = partition_dcheck_helper.cc
+  source_name_part = partition_dcheck_helper
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_freelist_entry.o: cxx ../../third_party/partition_alloc/src/partition_alloc/partition_freelist_entry.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = partition_freelist_entry.cc
+  source_name_part = partition_freelist_entry
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_oom.o: cxx ../../third_party/partition_alloc/src/partition_alloc/partition_oom.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = partition_oom.cc
+  source_name_part = partition_oom
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_page.o: cxx ../../third_party/partition_alloc/src/partition_alloc/partition_page.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = partition_page.cc
+  source_name_part = partition_page
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_root.o: cxx ../../third_party/partition_alloc/src/partition_alloc/partition_root.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = partition_root.cc
+  source_name_part = partition_root
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_stats.o: cxx ../../third_party/partition_alloc/src/partition_alloc/partition_stats.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = partition_stats.cc
+  source_name_part = partition_stats
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/random.o: cxx ../../third_party/partition_alloc/src/partition_alloc/random.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = random.cc
+  source_name_part = random
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/reservation_offset_table.o: cxx ../../third_party/partition_alloc/src/partition_alloc/reservation_offset_table.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = reservation_offset_table.cc
+  source_name_part = reservation_offset_table
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/spinning_mutex.o: cxx ../../third_party/partition_alloc/src/partition_alloc/spinning_mutex.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = spinning_mutex.cc
+  source_name_part = spinning_mutex
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/stack.o: cxx ../../third_party/partition_alloc/src/partition_alloc/stack/stack.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = stack.cc
+  source_name_part = stack
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/tagging.o: cxx ../../third_party/partition_alloc/src/partition_alloc/tagging.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = tagging.cc
+  source_name_part = tagging
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/thread_cache.o: cxx ../../third_party/partition_alloc/src/partition_alloc/thread_cache.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = thread_cache.cc
+  source_name_part = thread_cache
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/pkey.o: cxx ../../third_party/partition_alloc/src/partition_alloc/thread_isolation/pkey.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = pkey.cc
+  source_name_part = pkey
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/thread_isolation.o: cxx ../../third_party/partition_alloc/src/partition_alloc/thread_isolation/thread_isolation.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = thread_isolation.cc
+  source_name_part = thread_isolation
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/page_allocator_internals_posix.o: cxx ../../third_party/partition_alloc/src/partition_alloc/page_allocator_internals_posix.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = page_allocator_internals_posix.cc
+  source_name_part = page_allocator_internals_posix
+build obj/third_party/partition_alloc/src/partition_alloc/allocator_core/push_registers_asm.o: cxx ../../third_party/partition_alloc/src/partition_alloc/stack/asm/x64/push_registers_asm.cc || phony/third_party/partition_alloc/src/partition_alloc/buildflags
+  source_file_part = push_registers_asm.cc
+  source_name_part = push_registers_asm
+
+build obj/third_party/partition_alloc/src/partition_alloc/liballocator_core.a: alink obj/third_party/partition_alloc/src/partition_alloc/allocator_core/address_pool_manager.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/address_pool_manager_bitmap.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/address_space_randomization.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/allocation_guard.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/compressed_pointer.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/dangling_raw_ptr_checks.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/gwp_asan_support.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/internal_allocator.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/lightweight_quarantine.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/memory_reclaimer.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/oom.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/oom_callback.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/page_allocator.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_address_space.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_alloc.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_alloc_hooks.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_bucket.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_cookie.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_dcheck_helper.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_freelist_entry.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_oom.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_page.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_root.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/partition_stats.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/random.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/reservation_offset_table.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/spinning_mutex.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/stack.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/tagging.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/thread_cache.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/pkey.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/thread_isolation.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/page_allocator_internals_posix.o obj/third_party/partition_alloc/src/partition_alloc/allocator_core/push_registers_asm.o | ../../third_party/llvm-build/Release+Asserts/lib/clang/21/lib/x86_64-unknown-linux-gnu/libclang_rt.builtins.a || phony/third_party/partition_alloc/src/partition_alloc/build_config phony/third_party/partition_alloc/src/partition_alloc/buildflags obj/third_party/partition_alloc/src/partition_alloc/liballocator_base.a
+  arflags = -T -S
+  output_extension = .a
+  output_dir = obj/third_party/partition_alloc/src/partition_alloc
