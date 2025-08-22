@@ -80,7 +80,8 @@ MONITORS= {
     'instr-coverage': "",
     'call-graph': f"(whamm_hw)call={mypath}/{whamm_utils}/call.wasm"
 }
-# map of monitor names as above to pintool names
+# Map the name of the monitor to its corresponding pintool. Benchmarks on
+# monitors that do not have the corresponding pintool are skipped.
 PINTOOLS = {
     'icount': 'inscount0.so',
     'imix': 'catmix.so',
@@ -917,6 +918,7 @@ def run_wasabi(ty, monitor, suite, app, unit, cfgs):
         runN(f"{base_cmd} {unit.monitor_module}", result, False)
 
 def run_pin(name, monitor, suite, app, cfgs):
+    app_path = os.path.join(os.path.join(BENCHMARK_DIR, f"{suite}-mach"), app)
     # only one cfg? ignore cfgs
     result = Result(
         "pin",
@@ -926,9 +928,16 @@ def run_pin(name, monitor, suite, app, cfgs):
         suite,
         app
     )
-    # TODO make the call here
-
-
+    result0 = Result(
+        "pin",
+        monitor,
+        f"{name}-ret0",
+        ConfigSpecial.NA,
+        suite,
+        app
+    )
+    runN(f"{PIN_BIN} -t {PINTOOL_DIR}{monitor} -- {app_path}", result, False)
+    runN(f"{PIN_BIN} -t {PINTOOL_DIR}{monitor} -- {app_path}_ret0", result0, False)
 
 def check_if_applicable(exp, lib):
     s = f"({exp})"
@@ -1025,6 +1034,8 @@ def handle_pin(monitor, _lib, cfgs):
     monitor = PINTOOLS[monitor]
     for suite in SUITES:
         for app in os.listdir(os.path.join(BENCHMARK_DIR, f"{suite}-mach")):
+            if app.endswith("ret0"):
+                continue
             print(f"pin::{monitor} --> {app}", flush=True)
             run_pin("pin", monitor, suite, app, cfgs)
 
