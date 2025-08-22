@@ -88,8 +88,8 @@ to execute.
 ### Verify Setup ###
 
 It is recommended to do the following to validate the setup of the artifact. Doing so will result  in running end-to-end on a single benchmark by running each experiment configuration once and  timing out if a configuration runs for over 60 seconds.
-1. Run end-to-end on a single benchmark. Do this by leaving a single benchmark file in resources/suites/polybench, the jacobi-1d benchmark is recommended (it is shortest).
-2. Limit experiment executions by changing `src/run/run-exp.pyglobals`:
+1. Run end-to-end on 3 benchmarks. Do this by leaving a 3 (of the same) benchmark files in `resources/suites/polybench` and `resources/suites/polybench-mach` (this dir needs both the base and *_ret0 variants), the `doitgen`, `durbin`, and `heat3d` benchmarks are recommended as they are short.
+2. Limit experiment executions by changing `src/run/run-exp.py` globals:
 - `RUNS = 1`
 - `RUN_TIMEOUT = 60`
 

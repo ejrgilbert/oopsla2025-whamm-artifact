@@ -52,15 +52,11 @@ class RunMode(Enum):
     def should_jit(self):
         return self.value.startswith("jit-") or self.value == "inline"
 
-# RUNS = 5
+RUNS = 5
 TOO_LONG = 60
 RUNS_FOR_LONG = 3
-# RUN_TIMEOUT = 60 * 10 # 10 mins per run
+RUN_TIMEOUT = 60 * 10 # 10 mins per run
 RUN_BASELINES = True
-
-# TODO: put this back (used to make faster)
-RUNS = 1
-RUN_TIMEOUT = 60 * 2 # 2 mins per run
 
 SUITES = [ 'polybench' ]
 mypath = os.path.abspath(os.path.dirname(__file__))
@@ -89,50 +85,50 @@ PINTOOLS = {
     'mem-access': 'pinatrace.so',
 }
 EXPS = {
-#     'whamm_engine': [
-#         RunMode.IntRtInt,
-#         RunMode.JitRtInt,
-#         RunMode.IntRtJit,
-#         RunMode.JitRtJit,
-# 
-#         RunMode.IntTrampInt,
-#         RunMode.IntTrampJit,
-# 
-#         RunMode.JitWasmInt,
-#         RunMode.JitWasmJit,
-# 
-#         RunMode.Inline,
-#     ],
-#     'whamm_rewrite': [
-#         RunMode.IntDefault,
-#         RunMode.JitDefault,
-#     ],
-#     'whamm_hw': [
-#         RunMode.IntRtInt,
-#         RunMode.JitRtInt,
-#         RunMode.IntRtJit,
-#         RunMode.JitRtJit,
-# 
-#         RunMode.IntTrampInt,
-#         RunMode.IntTrampJit,
-# 
-#         RunMode.JitWasmInt,
-#         RunMode.JitWasmJit,
-# 
-#         RunMode.Inline,
-#     ],
-#     'wizard_native': [
-#         RunMode.IntDefault,
-#         RunMode.JitDefault
-#     ],
-#     'orca_rewrite': [
-#         RunMode.IntDefault,
-#         RunMode.JitDefault,
-#     ],
-#     'wasabi': [
-#         RunMode.V8,
-#         RunMode.V8Prod
-#     ],
+    'whamm_engine': [
+        RunMode.IntRtInt,
+        RunMode.JitRtInt,
+        RunMode.IntRtJit,
+        RunMode.JitRtJit,
+
+        RunMode.IntTrampInt,
+        RunMode.IntTrampJit,
+
+        RunMode.JitWasmInt,
+        RunMode.JitWasmJit,
+
+        RunMode.Inline,
+    ],
+    'whamm_rewrite': [
+        RunMode.IntDefault,
+        RunMode.JitDefault,
+    ],
+    'whamm_hw': [
+        RunMode.IntRtInt,
+        RunMode.JitRtInt,
+        RunMode.IntRtJit,
+        RunMode.JitRtJit,
+
+        RunMode.IntTrampInt,
+        RunMode.IntTrampJit,
+
+        RunMode.JitWasmInt,
+        RunMode.JitWasmJit,
+
+        RunMode.Inline,
+    ],
+    'wizard_native': [
+        RunMode.IntDefault,
+        RunMode.JitDefault
+    ],
+    'orca_rewrite': [
+        RunMode.IntDefault,
+        RunMode.JitDefault,
+    ],
+    'wasabi': [
+        RunMode.V8,
+        RunMode.V8Prod
+    ],
     'pin': [
         RunMode.Pin
     ]
@@ -828,8 +824,8 @@ def runN(cmd, result, has_wizeng_metrics):
     for i in range(RUNS):
         if too_long and i >= RUNS_FOR_LONG - 1:
             break
-        errored, timed_out = run_cmd(f"{HYPERFINE_BIN} --runs 1 --export-csv {timing_csv} --output {out}", cmd, True)
-        too_long |= process_metrics(result, errored, timed_out, out, timing_csv, has_wizeng_metrics)
+        errored, timed_out = run_cmd(f"{HYPERFINE_BIN} --show-output --runs 1 --export-csv {timing_csv} --output {out}", cmd, True)
+        # too_long |= process_metrics(result, errored, timed_out, out, timing_csv, has_wizeng_metrics)
     with open(OUTFILE, "a") as f:
         print(result, file=f)
     result.reset()
@@ -853,8 +849,8 @@ def run_engine(ty, monitor, suite, app, unit, cfgs):
         
         runN(f"{base_cmd} --monitors={unit.monitor_module} {app_path}", result, True)
 
-        # result.config_special = ConfigSpecial.CalcBundle
-        # runN(f"{base_cmd} --monitors={unit.calc_bundle_module} {app_path}", result, True)
+        result.config_special = ConfigSpecial.CalcBundle
+        runN(f"{base_cmd} --monitors={unit.calc_bundle_module} {app_path}", result, True)
 
 def run_rewritten(name, monitor, suite, app, unit, cfgs):
     for cfg in cfgs:

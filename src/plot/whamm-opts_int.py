@@ -81,12 +81,12 @@ def get_monitor_df(mon):
             rewriting_df = df[(df['config:monitor'] == mon) & (df['benchmark:suite'] == SUITE)]
             rewriting_data = rewriting_df[(rewriting_df['config:experiment'] == WHAMM_REWRITE) & (
                         rewriting_df['benchmark:name'] == benchmark_name)]
-            # try:
-            rewrite_int = \
-            rewriting_data[rewriting_data['config:run_mode'] == 'int-default'][RUNTIME_MEASUREMENT].values[0]
-            new_row['Whamm rewriting, int'] = rewrite_int / base_int
-            # except:
-            #     print(f"[{benchmark_name}@{mon}] missing data point for 'rewrite_int'")
+            try:
+                rewrite_int = \
+                rewriting_data[rewriting_data['config:run_mode'] == 'int-default'][RUNTIME_MEASUREMENT].values[0]
+                new_row['Whamm rewriting, int'] = rewrite_int / base_int
+            except:
+                print(f"[{benchmark_name}@{mon}] missing data point for 'rewrite_int'")
 
             # (Calculate relative overhead here)
             new_df_rows.append(new_row)

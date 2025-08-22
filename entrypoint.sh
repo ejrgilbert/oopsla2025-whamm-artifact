@@ -75,7 +75,7 @@ if ! "${DIR_BIN}"/whamm/target/release/whamm --help >/dev/null; then
 fi
 
 log_info "[whamm] Verifying whamm_core."
-if ! ls "${DIR_BIN}"/whamm/whamm_core/target/wasm32-wasip1/release/whamm_core.wasm --help >/dev/null; then
+if ! ls "${DIR_BIN}"/whamm/whamm_core/target/wasm32-wasip1/release/whamm_core.wasm >/dev/null; then
     error_exit "Could not find build whamm_core wasm module."
 fi
 
@@ -85,22 +85,12 @@ for wizeng in "${DIR_BIN}"/wizeng/wizeng*; do
         error_exit "Wizard engine build is not set up correctly for: ${wizeng}"
     fi
 done
-#
-#log_info "[pin] Setting up Pin."
-#
-## TODO: setup `pin`
-#
-#log_info "[cargo] Verifying Pin setup."
-#
-## TODO: validate setup `pin`
 
 
 echo "===================================================================================="
 log_info "Running the configured experiments."
 
 ts="$(date +%Y%m%d_%H%M%S)"
-#ts="tmp"
-#to_s="120"
 run_out="${DIR_OUT}/${ts}-output_run.log"
 set -o pipefail
 if ! python3 "${DIR_SRC}"/run/run-exp.py "${ts}" 2>&1 | tee "${run_out}"; then
@@ -121,22 +111,20 @@ PYTHON="$venv_loc"/bin/python
 if ! python3 -m venv "${venv_loc}"; then
     error_exit "Unable create virtual python environment"
 fi
-#if ! $PIP install -r "${DIR_SRC}"/plot/requirements.txt; then
-#    error_exit "Unable to install requirements at ${DIR_SRC}/plot/requirements.txt"
-#fi
-#if ! $PYTHON "${DIR_SRC}"/plot/whamm-opts_int.py "${ts}" "${to_s}" 2>&1; then
-#    error_exit "'python3 ${DIR_SRC}/plot/whamm-opts_int.py' failed."
-#fi
-#if ! $PYTHON "${DIR_SRC}"/plot/whamm-opts_jit.py "${ts}" "${to_s}" 2>&1; then
-#    error_exit "'python3 ${DIR_SRC}/plot/whamm-opts_jit.py' failed."
-#fi
-#if ! $PYTHON "${DIR_SRC}"/plot/whamm-vs-fmks.py "${ts}" "${to_s}" 2>&1; then
-#    error_exit "'python3 ${DIR_SRC}/plot/whamm-vs-fmks.py' failed."
-#fi
-
-## TODO: validate that the below runs correctly after we have Pin data!
-##if ! $PYTHON "${DIR_SRC}"/plot/whamm-vs-pin.py "${ts}" "${to_s}" 2>&1; then
-##    error_exit "'python3 ${DIR_SRC}/plot/whamm-vs-pin.py' failed."
-##fi
+if ! $PIP install -r "${DIR_SRC}"/plot/requirements.txt; then
+    error_exit "Unable to install requirements at ${DIR_SRC}/plot/requirements.txt"
+fi
+if ! $PYTHON "${DIR_SRC}"/plot/whamm-opts_int.py "${ts}" "${to_s}" 2>&1; then
+    error_exit "'python3 ${DIR_SRC}/plot/whamm-opts_int.py' failed."
+fi
+if ! $PYTHON "${DIR_SRC}"/plot/whamm-opts_jit.py "${ts}" "${to_s}" 2>&1; then
+    error_exit "'python3 ${DIR_SRC}/plot/whamm-opts_jit.py' failed."
+fi
+if ! $PYTHON "${DIR_SRC}"/plot/whamm-vs-fmks.py "${ts}" "${to_s}" 2>&1; then
+    error_exit "'python3 ${DIR_SRC}/plot/whamm-vs-fmks.py' failed."
+fi
+if ! $PYTHON "${DIR_SRC}"/plot/whamm-vs-pin.py "${ts}" "${to_s}" 2>&1; then
+    error_exit "'python3 ${DIR_SRC}/plot/whamm-vs-pin.py' failed."
+fi
 
 log_ok "Completed plotting the experiment results, see:\n\t--> plots in the directory ${DIR_OUT}/${ts}/results/plots"
