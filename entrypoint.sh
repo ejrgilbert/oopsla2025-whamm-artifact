@@ -100,15 +100,15 @@ done
 echo "===================================================================================="
 log_info "Running the configured experiments."
 
-#ts="$(date +%Y%m%d_%H%M%S)"
-ts="tmp"
+ts="$(date +%Y%m%d_%H%M%S)"
+#ts="tmp"
 #to_s="120"
 run_out="${DIR_OUT}/${ts}-output_run.log"
-#set -o pipefail
-#if ! python3 "${DIR_SRC}"/run/run-exp.py "${ts}" 2>&1 | tee "${run_out}"; then
-#    error_exit "'python3 ${DIR_SRC}/run/run-exp.py' failed."
-#fi
-#set +o pipefail
+set -o pipefail
+if ! python3 "${DIR_SRC}"/run/run-exp.py "${ts}" 2>&1 | tee "${run_out}"; then
+    error_exit "'python3 ${DIR_SRC}/run/run-exp.py' failed."
+fi
+set +o pipefail
 to_s=$(grep "timeout:" "${run_out}" | awk -F':' '{print $2}')
 
 log_ok "Completed running the configured experiments, see:\n\t--> output file at ${run_out}\n\t--> results in the directory ${DIR_OUT}/${ts}"
@@ -123,18 +123,18 @@ PYTHON="$venv_loc"/bin/python
 if ! python3 -m venv "${venv_loc}"; then
     error_exit "Unable create virtual python environment"
 fi
-if ! $PIP install -r "${DIR_SRC}"/plot/requirements.txt; then
-    error_exit "Unable to install requirements at ${DIR_SRC}/plot/requirements.txt"
-fi
-if ! $PYTHON "${DIR_SRC}"/plot/whamm-opts_int.py "${ts}" "${to_s}" 2>&1; then
-    error_exit "'python3 ${DIR_SRC}/plot/whamm-opts_int.py' failed."
-fi
-if ! $PYTHON "${DIR_SRC}"/plot/whamm-opts_jit.py "${ts}" "${to_s}" 2>&1; then
-    error_exit "'python3 ${DIR_SRC}/plot/whamm-opts_jit.py' failed."
-fi
-if ! $PYTHON "${DIR_SRC}"/plot/whamm-vs-fmks.py "${ts}" "${to_s}" 2>&1; then
-    error_exit "'python3 ${DIR_SRC}/plot/whamm-vs-fmks.py' failed."
-fi
+#if ! $PIP install -r "${DIR_SRC}"/plot/requirements.txt; then
+#    error_exit "Unable to install requirements at ${DIR_SRC}/plot/requirements.txt"
+#fi
+#if ! $PYTHON "${DIR_SRC}"/plot/whamm-opts_int.py "${ts}" "${to_s}" 2>&1; then
+#    error_exit "'python3 ${DIR_SRC}/plot/whamm-opts_int.py' failed."
+#fi
+#if ! $PYTHON "${DIR_SRC}"/plot/whamm-opts_jit.py "${ts}" "${to_s}" 2>&1; then
+#    error_exit "'python3 ${DIR_SRC}/plot/whamm-opts_jit.py' failed."
+#fi
+#if ! $PYTHON "${DIR_SRC}"/plot/whamm-vs-fmks.py "${ts}" "${to_s}" 2>&1; then
+#    error_exit "'python3 ${DIR_SRC}/plot/whamm-vs-fmks.py' failed."
+#fi
 
 ## TODO: validate that the below runs correctly after we have Pin data!
 ##if ! $PYTHON "${DIR_SRC}"/plot/whamm-vs-pin.py "${ts}" "${to_s}" 2>&1; then

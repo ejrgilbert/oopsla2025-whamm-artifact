@@ -129,16 +129,16 @@ cols = {
     'wasabi, v8': "wasabi, v8"
 }
 
-branches_df_thirds = make_thirds_jit(branches_df, True, cols)
-hotness_df_thirds = make_thirds_jit(hotness_df, True, cols)
-icount_df_thirds = make_thirds_jit(icount_df, True, cols)
-imix_df_thirds = make_thirds_jit(imix_df, True, cols)
-cache_df_thirds = make_thirds_jit(cache_df, True, cols)
-mem_access_df_thirds = make_thirds_jit(mem_access_df, True, cols)
-loop_tracer_df_thirds = make_thirds_jit(loop_tracer_df, True, cols)
-basic_blocks_df_thirds = make_thirds_jit(basic_blocks_df, True, cols)
-instr_coverage_df_thirds = make_thirds_jit(instr_coverage_df, True, cols)
-call_graph_df_thirds = make_thirds_jit(call_graph_df, True, cols)
+branches_df_thirds = make_thirds_jit(branches_df, cols)
+hotness_df_thirds = make_thirds_jit(hotness_df, cols)
+icount_df_thirds = make_thirds_jit(icount_df, cols)
+imix_df_thirds = make_thirds_jit(imix_df, cols)
+cache_df_thirds = make_thirds_jit(cache_df, cols)
+mem_access_df_thirds = make_thirds_jit(mem_access_df, cols)
+loop_tracer_df_thirds = make_thirds_jit(loop_tracer_df, cols)
+basic_blocks_df_thirds = make_thirds_jit(basic_blocks_df, cols)
+instr_coverage_df_thirds = make_thirds_jit(instr_coverage_df, cols)
+call_graph_df_thirds = make_thirds_jit(call_graph_df, cols)
 
 # =======================
 # ==== PLOT THE DATA ====
@@ -172,6 +172,7 @@ def plot_df_grouped(configs):
         colors = [color_key[i] for i in order]
 
         groups = df["group"].unique()
+        print(groups)
 
         width = 0.9  # total width per group
         offsets = np.linspace(-width / 3, width / 3, len(order))
@@ -194,7 +195,7 @@ def plot_df_grouped(configs):
                         parts[key].set_color("black")
 
         # Set custom x-axis labels
-        ax.set_xticks(range(0, 3))
+        ax.set_xticks(range(0, len(groups)))
         if include_benchmarks_label:
             ax.set_xticklabels(["polybench-short", "polybench-medium", "polybench-long"], fontsize=12,
                                rotation=0)  # Set the x-tick labels
@@ -215,7 +216,7 @@ def plot_df_grouped(configs):
     fig.text(-0.01, 0.56, f'Relative Overhead', ha='left', va='center', fontsize=17, fontweight='bold', rotation=90)
     fig.text(0.5, -.01, 'Benchmark Sub-Suite', ha='center', va='bottom', fontsize=17, fontweight='bold')
     # Automatically adjust the layout for better spacing
-    plt.tight_layout()
+    # plt.tight_layout()
 
     plt.savefig(f"{OUTDIR_PLOTS}/whamm-vs-fmks.pdf", bbox_inches='tight')
 

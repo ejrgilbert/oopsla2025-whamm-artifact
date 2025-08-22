@@ -1,3 +1,5 @@
+import pandas as pd
+
 def clean(df, timeout_s):
     column_dtypes = {
         "run_time:mean": "float64",
@@ -28,7 +30,6 @@ def clean(df, timeout_s):
     opts["wiz_metrics_whamm:report_time_us"] = opts["wiz_metrics_whamm:report_time_us"].replace("NONE", 0)
     opts["wiz_metrics_whamm:report_time_us"] = opts["wiz_metrics_whamm:report_time_us"].fillna(0)
 
-    # opts = opts[opts['config:experiment'].isin(['whamm_engine', 'base-run', 'whamm_rewrite'])]
     df = opts.astype(column_dtypes)
 
     # Check that there are no errors in the data set
@@ -37,68 +38,13 @@ def clean(df, timeout_s):
 
     return df
 
-def group_int(x):
-    if x["suite"] == "polybench":
-        if x["time-int"] < 250_000:
-            return 1
-        elif x["time-int"] < 800_000:
-            return 2
-        else:
-            return 3
-    else:
-        if x["time-int"] < 10_000:
-            return 4
-        if x["time-int"] < 1.7e6:
-            return 5
-        return 6
-
 def make_thirds_int(all_df):
-    all_df['group'] = all_df.apply(group_int, axis=1)
-    all_df = all_df.rename(columns={
-        '$\\it{wei}$, int-rt-int': '$\\it{wei}$, int-rt-int',
-        '$\\it{wei}$, int-rt-jit': '$\\it{wei}$, int-rt-jit',
-        '$\\it{wei}$, int-tramp-int': '$\\it{wei}$, int-tramp-int',
-        '$\\it{wei}$, int-tramp-jit': '$\\it{wei}$, int-tramp-jit',
-        'Whamm rewriting, int': 'Whamm rewriting, int'
-    })
+    # Split into 3 equally sized groups (tertiles)
+    all_df['group'] = pd.qcut(all_df["time-int"], q=3, labels=[1, 2, 3])
     return all_df
 
-def group_jit_s(x):
-    if x["suite"] == "r3":
-        if x["time-jit"] < 0.30:
-            return 4
-        elif x["time-jit"] < 0.79:
-            return 5
-        else:
-            return 6
-    else:
-        if x["time-jit"] < 0.030:
-            return 1
-        elif x["time-jit"] < 0.06:
-            return 2
-        else:
-            return 3
-
-def group_jit_us(x):
-    if x["suite"] == "r3":
-        if x["time-jit"] < 1_000:
-            return 4
-        elif x["time-jit"] < 120_000:
-            return 5
-        else:
-            return 6
-    else:
-        if x["time-jit"] < 20_000:
-            return 1
-        elif x["time-jit"] < 50_000:
-            return 2
-        else:
-            return 3
-
-def make_thirds_jit(all_df, in_s, cols):
-    if in_s:
-        all_df['group'] = all_df.apply(group_jit_s, axis=1)
-    else:
-        all_df['group'] = all_df.apply(group_jit_us, axis=1)
+def make_thirds_jit(all_df, cols):
+    # Split into 3 equally sized groups (tertiles)
+    all_df['group'] = pd.qcut(all_df["time-jit"], q=3, labels=[1, 2, 3])
     all_df = all_df.rename(columns = cols)
     return all_df

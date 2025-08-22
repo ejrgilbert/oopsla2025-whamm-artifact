@@ -56,38 +56,37 @@ def get_monitor_df(mon):
                 int_rt_int = engine_data[engine_data['config:run_mode'] == 'int-rt-int'][RUNTIME_MEASUREMENT].values[0]
                 new_row['$\\it{wei}$, int-rt-int'] = int_rt_int / base_int
             except:
-                print("missing data point for 'int_rt_int'")
+                print(f"[{benchmark_name}@{mon}] missing data point for 'int_rt_int'")
 
             try:
                 int_rt_jit = engine_data[engine_data['config:run_mode'] == 'int-rt-jit'][RUNTIME_MEASUREMENT].values[0]
                 new_row['$\\it{wei}$, int-rt-jit'] = int_rt_jit / base_int
             except:
-                print("missing data point for 'int_rt_jit'")
+                print(f"[{benchmark_name}@{mon}] missing data point for 'int_rt_jit'")
 
             try:
                 int_tramp_int = engine_data[engine_data['config:run_mode'] == 'int-tramp-int'][RUNTIME_MEASUREMENT].values[
                     0]
                 new_row['$\\it{wei}$, int-tramp-int'] = int_tramp_int / base_int
             except:
-                print("missing data point for 'int_tramp_int'")
+                print(f"[{benchmark_name}@{mon}] missing data point for 'int_tramp_int'")
 
             try:
                 int_tramp_jit = engine_data[engine_data['config:run_mode'] == 'int-tramp-jit'][RUNTIME_MEASUREMENT].values[
                     0]
                 new_row['$\\it{wei}$, int-tramp-jit'] = int_tramp_jit / base_int
             except:
-                print("missing data point for 'int_tramp_jit'")
+                print(f"[{benchmark_name}@{mon}] missing data point for 'int_tramp_jit'")
 
             rewriting_df = df[(df['config:monitor'] == mon) & (df['benchmark:suite'] == SUITE)]
             rewriting_data = rewriting_df[(rewriting_df['config:experiment'] == WHAMM_REWRITE) & (
-                        rewriting_df['benchmark:name'] == benchmark_name) & (
-                                                      rewriting_df['config:special'] == 'calc_report')]
-            try:
-                rewrite_int = \
-                rewriting_data[rewriting_data['config:run_mode'] == 'int-default'][RUNTIME_MEASUREMENT].values[0]
-                new_row['Whamm rewriting, int'] = rewrite_int / base_int
-            except:
-                print("skipping data point for 'rewrite_int'")
+                        rewriting_df['benchmark:name'] == benchmark_name)]
+            # try:
+            rewrite_int = \
+            rewriting_data[rewriting_data['config:run_mode'] == 'int-default'][RUNTIME_MEASUREMENT].values[0]
+            new_row['Whamm rewriting, int'] = rewrite_int / base_int
+            # except:
+            #     print(f"[{benchmark_name}@{mon}] missing data point for 'rewrite_int'")
 
             # (Calculate relative overhead here)
             new_df_rows.append(new_row)
@@ -186,7 +185,7 @@ def plot_df_grouped(configs):
     # Automatically adjust the layout for better spacing
     plt.tight_layout()
 
-    plt.savefig(f"{OUTDIR_PLOTS}/RERUN-int-opts-all-monitors.pdf", bbox_inches='tight')
+    plt.savefig(f"{OUTDIR_PLOTS}/int-opts-all-monitors.pdf", bbox_inches='tight')
 
 
 branches_df_thirds_cfg = (branches_df_thirds, 1e1, 'branches', False)

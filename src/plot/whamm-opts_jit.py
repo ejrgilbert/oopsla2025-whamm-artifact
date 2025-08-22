@@ -87,8 +87,7 @@ def get_monitor_df(mon):
 
             rewriting_df = df[(df['config:monitor'] == mon) & (df['benchmark:suite'] == SUITE)]
             rewriting_data = rewriting_df[(rewriting_df['config:experiment'] == WHAMM_REWRITE) & (
-                        rewriting_df['benchmark:name'] == benchmark_name) & (
-                                                      rewriting_df['config:special'] == 'calc_report')]
+                        rewriting_df['benchmark:name'] == benchmark_name)]
             try:
                 rewrite_jit = \
                 rewriting_data[rewriting_data['config:run_mode'] == 'jit-default'][RUNTIME_MEASUREMENT].values[0]
@@ -124,16 +123,16 @@ cols = {
     'Whamm rewriting, jit': '$Whamm$ rewriting, jit'
 }
 
-branches_df_thirds = make_thirds_jit(branches_df, False, cols)
-hotness_df_thirds = make_thirds_jit(hotness_df, False, cols)
-icount_df_thirds = make_thirds_jit(icount_df, False, cols)
-imix_df_thirds = make_thirds_jit(imix_df, False, cols)
-cache_df_thirds = make_thirds_jit(cache_df, False, cols)
-mem_access_df_thirds = make_thirds_jit(mem_access_df, False, cols)
-loop_tracer_df_thirds = make_thirds_jit(loop_tracer_df, False, cols)
-basic_blocks_df_thirds = make_thirds_jit(basic_blocks_df, False, cols)
-instr_coverage_df_thirds = make_thirds_jit(instr_coverage_df, False, cols)
-call_graph_df_thirds = make_thirds_jit(call_graph_df, False, cols)
+branches_df_thirds = make_thirds_jit(branches_df, cols)
+hotness_df_thirds = make_thirds_jit(hotness_df, cols)
+icount_df_thirds = make_thirds_jit(icount_df, cols)
+imix_df_thirds = make_thirds_jit(imix_df, cols)
+cache_df_thirds = make_thirds_jit(cache_df, cols)
+mem_access_df_thirds = make_thirds_jit(mem_access_df, cols)
+loop_tracer_df_thirds = make_thirds_jit(loop_tracer_df, cols)
+basic_blocks_df_thirds = make_thirds_jit(basic_blocks_df, cols)
+instr_coverage_df_thirds = make_thirds_jit(instr_coverage_df, cols)
+call_graph_df_thirds = make_thirds_jit(call_graph_df, cols)
 
 # =======================
 # ==== PLOT THE DATA ====
@@ -204,7 +203,7 @@ def plot_df_grouped(configs):
     fig.text(-.003, 0.56, f' ', ha='left', va='center', fontsize=17, fontweight='bold', rotation=90)
     # Automatically adjust the layout for better spacing
     plt.tight_layout()
-    plt.savefig(f"{OUTDIR_PLOTS}/RERUN-jit-opts-all-monitors.pdf", bbox_inches='tight')
+    plt.savefig(f"{OUTDIR_PLOTS}/jit-opts-all-monitors.pdf", bbox_inches='tight')
 
 branches_df_thirds_cfg = (branches_df_thirds, 1e3, 'branches', False)
 hotness_df_thirds_cfg = (hotness_df_thirds, 1e4, 'hotness', False)
