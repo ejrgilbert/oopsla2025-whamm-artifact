@@ -18,6 +18,7 @@ if uname -m | grep "arm" >/dev/null; then
     arm_arg="--platform=linux/amd64"
     user_opt="-f"
 else
+    arm_arg="--platform=linux/x86_64"
     user_opt='--printf'
 fi
 
