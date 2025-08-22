@@ -7,7 +7,6 @@ The paper presents Whamm, a framework for WebAssembly instrumentation that can i
 via bytecode rewriting or the Whamm engine interface, named _wei_. The evaluation compares
 Whamm with other frameworks in both usability and performance.
 
-
 ## Overview ##
 
 This artifact includes scripts to run the experiments that compare instrumentation overheads across the following Wasm frameworks:
@@ -19,18 +18,15 @@ This artifact includes scripts to run the experiments that compare instrumentati
 
 It also evaluates the impact of the various interpreter and JIT optimizations for _wei_ presented in the paper.
 
-The scripts to plot the data in violin plots for evaluation is also included in `src/plot/whamm*.py`
+The scripts to plot the data in violin plots for evaluation are also included in `src/plot/whamm*.py`
 
-This artifact uses the following versions for each framework:
-Rewriting-instrumenter:
-- sha: 2f23d7b261ec0b79809dcc57224ef06f40e8a5e2
-V8:
-- sha: 8db16e651ff456e0eea6e576045623d2039a1d34
-
-The artifact runs instrumentation on the following runtime versions:
-TODO
-
-
+This artifact uses the following versions for its software dependencies:
+- [Rewriting-instrumenter](https://github.com/ejrgilbert/rewriting-instrumenter), sha: 2f23d7b261ec0b79809dcc57224ef06f40e8a5e2
+- [V8](https://v8.dev/docs/source-code), sha: 8db16e651ff456e0eea6e576045623d2039a1d34
+- [hyperfine](https://github.com/sharkdp/hyperfine), version 1.19.0
+- [Wasabi](https://github.com/danleh/wasabi), sha: 21a322b7faac9440b931762aae124ffa57d0fa17
+- [Whamm](https://github.com/ejrgilbert/whamm), sha: f7ffe1b10f68f00a5ecf5e8453bdcd53db395b4b
+- [Wizeng](https://github.com/ejrgilbert/wizard-engine), sha: e4a786735d11e156f2fe32b8ad19a2e0da6fde43, the specific binary configurations built are explained in `resources/bin/wizeng/README.md`
 
 The following provides a high-level overview of the artifact repository:
 - `run.sh`: The script run by the end-user to start artifact execution (builds the Docker image and starts the container).
