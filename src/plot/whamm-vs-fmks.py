@@ -172,7 +172,6 @@ def plot_df_grouped(configs):
         colors = [color_key[i] for i in order]
 
         groups = df["group"].unique()
-        print(groups)
 
         width = 0.9  # total width per group
         offsets = np.linspace(-width / 3, width / 3, len(order))

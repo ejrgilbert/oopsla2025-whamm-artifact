@@ -224,7 +224,6 @@ def pin_df(mon):
         except:
             print(f"[{benchmark_name}] skipping, no baseline data")
             continue
-        print(f"[{benchmark_name}] success, found data")
 
 
         pin_data = polybench_pin_df[polybench_pin_df['benchmark:name'] == benchmark_name]
@@ -255,18 +254,13 @@ def pin_df(mon):
 
     return pd.DataFrame(new_df_rows)
 
-print("collect pin imix")
 imix_pin_df = pin_df('imix')
-print("collect pin cache")
 cache_pin_df = pin_df('cache-sim')
-print("collect pin icount")
 icount_pin_df = pin_df('icount')
 
 # =======================
 # ==== PLOT THE DATA ====
 # =======================
-print("Plot the data")
-print(imix_pin_df)
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -318,7 +312,6 @@ def plot_df(engine, rewrite, pin, ylim, mon_name, txt, include_title=False, incl
     ax.set_xlim(0.5, len(pin_df_sorted))  # Adjust the limits to create buffer space
 
     # Set custom x-axis labels
-    print(engine_df_sorted['benchmark'])
     if include_benchmarks:
         ax.set_xticklabels(engine_df_sorted['benchmark'], fontsize=12, rotation=45)  # Set the x-tick labels
         plt.xlabel('Benchmark', fontweight='bold', fontsize=17)
@@ -402,7 +395,6 @@ def min_max(target_df):
     return row_sums.min(), row_sums.max()
 
 # Plot Imix Monitor
-print(imix_pin_df)
 engine_minmax = min_max(imix_engine_df)
 imix_engine_min = engine_minmax[0]
 imix_engine_max = engine_minmax[1]
