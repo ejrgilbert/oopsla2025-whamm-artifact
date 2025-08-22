@@ -15,6 +15,7 @@ This artifact includes scripts to run the experiments that compare instrumentati
 - [Wasabi](http://wasabi.software-lab.org/)
 - [Wirm](https://github.com/composablesys/wirm), rewriting
 - [Wizard](https://github.com/titzer/wizard-engine) native instrumentation
+- [Pin](https://www.intel.com/content/www/us/en/developer/articles/tool/pin-a-dynamic-binary-instrumentation-tool.html) machine code instrumentation
 
 It also evaluates the impact of the various interpreter and JIT optimizations for _wei_ presented in the paper.
 
@@ -34,7 +35,7 @@ The following provides a high-level overview of the artifact repository:
 - `docker/`: All logic necessary to build the Docker image.
 - `entrypoint.sh`: The entrypoint of the Docker container: sets up and validates the environment configuration, executes the experiments, and plots the results.
 - `resources/`: All supporting files such as binaries, submodules, monitor implementations for each evaluated framework, benchmark suites, and the original data from the paper.
-`src/`: All core logic to `run/` the experiments and `plot/` the results.
+- `src/`: All core logic to `run/` the experiments and `plot/` the results.
 
 ## Getting Started ##
 
@@ -60,6 +61,8 @@ git submodule init && git submodule update
 # Just run it! (everything runs in docker)
 ./run.sh
 ```
+
+[!WARNING] The _full_ artifact will only work on an x86_64 Linux machine due to the constraints of the Pin framework. However, if this set of experiments is turned off using the `MONITORS` variable in `src/run/run-exp.py`, the artifact can also run on an `amd64` machine.
 
 In order to run the artifact, the end-user simply needs to enter the base directory and run the `run.sh` script. This script performs the following actions:
 1. Build the Docker image.
