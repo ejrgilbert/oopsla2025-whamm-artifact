@@ -62,7 +62,8 @@ git submodule init && git submodule update
 ./run.sh
 ```
 
-> [!WARNING] The _full_ artifact will only work on an x86_64 Linux machine due to the constraints of the Pin framework.
+> [!WARNING]
+> The _full_ artifact will only work on an x86_64 Linux machine due to the constraints of the Pin framework.
 > However, if this set of experiments is turned off using the `MONITORS` variable in `src/run/run-exp.py`, the artifact can also run on an `amd64` machine.
 
 In order to run the artifact, the end-user simply needs to enter the base directory and run the `run.sh` script. This script performs the following actions:
