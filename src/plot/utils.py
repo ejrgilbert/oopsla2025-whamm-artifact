@@ -28,7 +28,7 @@ def clean(df, timeout_s):
     opts["wiz_metrics_whamm:report_time_us"] = opts["wiz_metrics_whamm:report_time_us"].replace("NONE", 0)
     opts["wiz_metrics_whamm:report_time_us"] = opts["wiz_metrics_whamm:report_time_us"].fillna(0)
 
-    opts = opts[opts['config:experiment'].isin(['whamm_engine', 'base-run', 'whamm_rewrite'])]
+    # opts = opts[opts['config:experiment'].isin(['whamm_engine', 'base-run', 'whamm_rewrite'])]
     df = opts.astype(column_dtypes)
 
     # Check that there are no errors in the data set

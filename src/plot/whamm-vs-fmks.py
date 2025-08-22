@@ -61,14 +61,14 @@ def get_monitor_df(mon):
                 engine_inline = engine_data[engine_data['config:run_mode'] == 'inline'][RUNTIME_MEASUREMENT].values[0]
                 new_row['$\\it{wei}$, inlined'] = engine_inline / base_jit
             except:
-                print(f"[{mon}] missing data point for 'engine_inline'")
+                print(f"[{benchmark_name}@{mon}] missing data point for 'engine_inline'")
 
             rewriting_data = mon_df[(mon_df['config:experiment'] == WHAMM_REWRITE) & (mon_df['benchmark:name'] == benchmark_name)]
             try:
                 rewrite_jit = rewriting_data[rewriting_data['config:run_mode'] == 'jit-default'][RUNTIME_MEASUREMENT].values[0]
                 new_row['Whamm rewriting, jit'] = rewrite_jit / base_jit
             except:
-                print(f"[{mon}] missing data point for 'rewrite_jit'")
+                print(f"[{benchmark_name}@{mon}] missing data point for 'rewrite_jit'")
 
             hw_data = mon_df[(mon_df['config:experiment'] == WHAMM_HW) &
                              (mon_df['benchmark:name'] == benchmark_name)]
@@ -76,29 +76,30 @@ def get_monitor_df(mon):
                 hw_inline = hw_data[hw_data['config:run_mode'] == 'inline'][RUNTIME_MEASUREMENT].values[0]
                 new_row['$\\it{wei}$-handwritten, inlined'] = hw_inline / base_jit
             except:
-                print(f"[{mon}] missing data point for 'hw_inline'")
+                print(f"[{benchmark_name}@{mon}] missing data point for 'hw_inline'")
 
             native_data = mon_df[(mon_df['config:experiment'] == ENGINE_NATIVE) & (mon_df['benchmark:name'] == benchmark_name)]
             try:
                 native_time = native_data[native_data['config:run_mode'] == 'jit-default'][RUNTIME_MEASUREMENT].values[0]
                 new_row['engine-native, jit'] = native_time / base_jit
             except:
-                print(f"[{mon}] missing data point for 'native_time'")
+                print(f"[{benchmark_name}@{mon}] missing data point for 'native_time'")
 
             wasabi_data = mon_df[(mon_df['config:experiment'] == WASABI) & (mon_df['benchmark:name'] == benchmark_name)]
             try:
                 wasabi_time = wasabi_data[wasabi_data['config:run_mode'] == 'v8'][RUNTIME_MEASUREMENT].values[0]
-                base_v8 = df[df['benchmark'] == benchmark_name]['BASE (v8)'].values[0]
+                base_v8 = df[(df['benchmark:suite'] == SUITE) & (df['config:experiment'] == 'base-run') &
+                             (df['benchmark:name'] == benchmark_name) & (df['config:run_mode'] == 'base_v8')][RUNTIME_MEASUREMENT].values[0]
                 new_row['wasabi, v8'] = wasabi_time / base_v8
             except:
-                print(f"[{mon}] missing data point for 'wasabi'")
+                print(f"[{benchmark_name}@{mon}] missing data point for 'wasabi'")
 
             orca_data = mon_df[(mon_df['config:experiment'] == ORCA) & (mon_df['benchmark:name'] == benchmark_name)]
             try:
                 orca_jit = orca_data[orca_data['config:run_mode'] == 'jit-default'][RUNTIME_MEASUREMENT].values[0]
                 new_row['wirm rewriting, jit'] = orca_jit / base_jit
             except:
-                print(f"[{mon}] missing data point for 'orca_jit'")
+                print(f"[{benchmark_name}@{mon}] missing data point for 'orca_jit'")
 
             new_df_rows.append(new_row)
 
