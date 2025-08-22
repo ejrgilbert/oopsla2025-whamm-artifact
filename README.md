@@ -34,7 +34,7 @@ The following provides a high-level overview of the artifact repository:
 - `run.sh`: The script run by the end-user to start artifact execution (builds the Docker image and starts the container).
 - `docker/`: All logic necessary to build the Docker image.
 - `entrypoint.sh`: The entrypoint of the Docker container: sets up and validates the environment configuration, executes the experiments, and plots the results.
-- `resources/`: All supporting files such as binaries, submodules, monitor implementations for each evaluated framework, benchmark suites, and the original data from the paper.
+- `resources/`: All supporting files such as binaries, submodules, monitor implementations for each evaluated framework, benchmark suites, and the original data from the paper (in `resources/orig-results`).
 - `src/`: All core logic to `run/` the experiments and `plot/` the results.
 
 ## Getting Started ##
@@ -88,7 +88,7 @@ to execute.
 ### Verify Setup ###
 
 It is recommended to do the following to validate the setup of the artifact. Doing so will result  in running end-to-end on a single benchmark by running each experiment configuration once and  timing out if a configuration runs for over 60 seconds.
-1. Run end-to-end on 3 benchmarks. Do this by leaving a 3 (of the same) benchmark files in `resources/suites/polybench` and `resources/suites/polybench-mach` (this dir needs both the base and *_ret0 variants), the `doitgen`, `durbin`, and `heat3d` benchmarks are recommended as they are short.
+1. Run end-to-end on 3 benchmarks. Do this by leaving a 3 (of the same) benchmark files in `resources/suites/polybench` and `resources/suites/polybench-mach` (this dir needs both the base and *_ret0 variants), the `doitgen`, `durbin`, and `jacobi-1d` benchmarks are recommended as they are short.
 2. Limit experiment executions by changing `src/run/run-exp.py` globals:
 - `RUNS = 1`
 - `RUN_TIMEOUT = 60`
