@@ -824,7 +824,7 @@ def runN(cmd, result, has_wizeng_metrics):
     for i in range(RUNS):
         if too_long and i >= RUNS_FOR_LONG - 1:
             break
-        errored, timed_out = run_cmd(f"{HYPERFINE_BIN} --show-output --runs 1 --export-csv {timing_csv} --output {out}", cmd, True)
+        errored, timed_out = run_cmd(f"{HYPERFINE_BIN} --runs 1 --export-csv {timing_csv} --output {out}", cmd, True)
         # too_long |= process_metrics(result, errored, timed_out, out, timing_csv, has_wizeng_metrics)
     with open(OUTFILE, "a") as f:
         print(result, file=f)
