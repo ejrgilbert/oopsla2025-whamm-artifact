@@ -23,6 +23,7 @@ The scripts to plot the data in violin plots for evaluation are also included in
 This artifact uses the following versions for its software dependencies:
 - [Rewriting-instrumenter](https://github.com/ejrgilbert/rewriting-instrumenter), sha: 2f23d7b261ec0b79809dcc57224ef06f40e8a5e2
 - [V8](https://v8.dev/docs/source-code), sha: 8db16e651ff456e0eea6e576045623d2039a1d34
+- [Pin](https://www.intel.com/content/www/us/en/developer/articles/tool/pin-a-dynamic-binary-instrumentation-tool.html), version 3.1
 - [hyperfine](https://github.com/sharkdp/hyperfine), version 1.19.0
 - [Wasabi](https://github.com/danleh/wasabi), sha: 21a322b7faac9440b931762aae124ffa57d0fa17
 - [Whamm](https://github.com/ejrgilbert/whamm), sha: f7ffe1b10f68f00a5ecf5e8453bdcd53db395b4b
@@ -126,7 +127,9 @@ the artifact, the plotting scripts will need to be manually adapted.
  
 ### Adding a new suite. ###
 1. Add a new folder with the benchmark suite name to `resources/suites`.
-2. Point to that new suite by putting the same name as the directory in the `SUITES` variable in the `src/run/run-exp.py script`. Running `./run.sh` should now pick up the new suite of benchmarks. To support running the Pin experiment configuration, the benchmarks will need to be available as machine code and Wasm modules, instructions to generate machine code from Wasm code is available in `pin/README.md` (follow the same structure as used by the `polybench` suite already configured).
+2. Point to that new suite by putting the same name as the directory in the `SUITES` variable in the `src/run/run-exp.py script`.
+   Running `./run.sh` should now pick up the new suite of benchmarks.
+   To support running the Pin experiment configuration, the benchmarks will need to be available as machine code and Wasm modules, instructions to generate machine code from Wasm code is available in `src/pin-utils/README.md` (follow the same structure as used by the `polybench-mach` suite already configured).
 
 ### Adding a new monitor. ###
 1. New monitors should be placed in `resources/monitors` for the corresponding framework(s).
