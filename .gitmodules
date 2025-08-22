@@ -1,9 +1,6 @@
 [submodule "resources/bin/rewriting-instrumenter"]
 	path = resources/bin/rewriting-instrumenter
 	url = https://github.com/ejrgilbert/rewriting-instrumenter
-[submodule "resources/bin/v8"]
-	path = resources/bin/v8
-	url = https://chromium.googlesource.com/v8/v8.git
 [submodule "resources/bin/whamm"]
 	path = resources/bin/whamm
 	url = https://github.com/ejrgilbert/whamm.git
