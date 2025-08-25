@@ -87,11 +87,11 @@ to execute.
 
 ### Verify Setup ###
 
-It is recommended to do the following to validate the setup of the artifact. Doing so will result  in running end-to-end on a single benchmark by running each experiment configuration once and  timing out if a configuration runs for over 60 seconds.
+It is recommended to do the following to validate the setup of the artifact. Doing so will result  in running end-to-end on a single benchmark by running each experiment configuration once and  timing out if a configuration runs for over 5 seconds.
 1. Run end-to-end on 3 benchmarks. Do this by leaving a 3 (of the same) benchmark files in `resources/suites/polybench` and `resources/suites/polybench-mach` (this dir needs both the base and *_ret0 variants), the `doitgen`, `durbin`, and `jacobi-1d` benchmarks are recommended as they are short.
 2. Limit experiment executions by changing `src/run/run-exp.py` globals:
 - `RUNS = 1`
-- `RUN_TIMEOUT = 60`
+- `RUN_TIMEOUT = 5`
 
 If the artifact ran successfully, where `<timestamp>` is the time that the experiment run started (see how `entrypoint.sh` uses the date command):
 - an experiment log should be written to `out/<timestamp>-output_run.log`.
