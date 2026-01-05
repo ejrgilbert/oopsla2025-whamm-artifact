@@ -57,6 +57,7 @@ TOO_LONG = 60
 RUNS_FOR_LONG = 3
 RUN_TIMEOUT = 60 * 10 # 10 mins per run
 RUN_BASELINES = True
+RUN_PIN_BASELINES = True
 
 SUITES = [ 'polybench' ]
 mypath = os.path.abspath(os.path.dirname(__file__))
@@ -1136,6 +1137,7 @@ def run_uninstr():
 def main():
     if RUN_BASELINES:
         run_uninstr()
+    if RUN_PIN_BASELINES:
         run_pin_uninstr()
     for ty,cfgs in EXPS.items():
         run_exp(ty,cfgs)
