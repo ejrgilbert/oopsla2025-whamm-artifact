@@ -64,7 +64,9 @@ git submodule init && git submodule update
 
 > [!WARNING]
 > The _full_ artifact will only work on an x86_64 Linux machine due to the constraints of the Pin framework.
-> However, if this set of experiments is turned off using the `EXPS` variable in `src/run/run-exp.py`, the artifact can also run on an `amd64` machine (simply comment out the 'pin' key and its corresponding array value).
+> However, if this set of experiments is turned off using the `EXPS` and `RUN_PIN_BASELINES` variables in `src/run/run-exp.py`, the artifact can also run on an `amd64` machine
+> - Configure `EXPS` to skip Pin experiments: simply comment out the 'pin' key and its corresponding array value.
+> - Configure `RUN_PIN_BASELINES` to skip Pin baselines: simply change the variable to be `False`.
 
 In order to run the artifact, the end-user simply needs to enter the base directory and run the `run.sh` script. This script performs the following actions:
 1. Build the Docker image.
@@ -80,6 +82,7 @@ The following global variables in src/run/run-exp.pycan be modified to customize
 - `RUNS_FOR_LONG`: The number of times to run if an experiment takes longer than TOO_LONG
 to execute.
 - `RUN_BASELINES`: Whether to run and collect the baseline data.
+- `RUN_PIN_BASELINES`: Whether to run and collect the baseline data for the Pin framework.
 - `MONITORS`: The monitors to run and collect data for during this experiment execution (comment out monitors to not run).
 - `EXPS`: The experiment configurations to run during this execution (comment out configurations to not run).
 - `ERR_STRS`: If any of these strings are found in an experiment’s logged output, it is categorized as a failure and the output file will be saved to `out/<timestamp>/errors`.
