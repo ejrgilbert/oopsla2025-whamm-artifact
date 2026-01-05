@@ -64,9 +64,11 @@ git submodule init && git submodule update
 
 > [!WARNING]
 > The _full_ artifact will only work on an x86_64 Linux machine due to the constraints of the Pin framework.
-> However, if this set of experiments is turned off using the `EXPS` and `RUN_PIN_BASELINES` variables in `src/run/run-exp.py`, the artifact can also run on an `amd64` machine
+> However, if this set of experiments is turned off using the `EXPS` and `RUN_PIN_BASELINES` variables in `src/run/run-exp.py`, the artifact can also run on an `amd64` machine.
+> Do the following steps to run the artifact on an `amd64` machine:
 > - Configure `EXPS` to skip Pin experiments: simply comment out the 'pin' key and its corresponding array value.
 > - Configure `RUN_PIN_BASELINES` to skip Pin baselines: simply change the variable to be `False`.
+> - Skip generating a plot for the experiment: Comment out the `if` statement that executes the `whamm-vs-pin.py` script at the bottom of the `./entrypoint.sh` script.
 
 In order to run the artifact, the end-user simply needs to enter the base directory and run the `run.sh` script. This script performs the following actions:
 1. Build the Docker image.
