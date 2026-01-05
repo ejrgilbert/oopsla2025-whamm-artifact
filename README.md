@@ -88,6 +88,9 @@ to execute.
 - `ERR_STRS`: If any of these strings are found in an experiment’s logged output, it is categorized as a failure and the output file will be saved to `out/<timestamp>/errors`.
 - `SKIP`: A list of benchmarks to skip in the suite as the script is executing, put the full filename (e.g. `SKIP = [ "jacobi-1d.wasm" ]`).
 
+NOTE: Timeouts _will_ happen, especially for instrumented benchmarks. So if you see a "Timeout expired for: ..." error, it doesn't mean anything went wrong. It just means a timeout was reach
+ed and the benchmark was exited early. This is intentional to keep the benchmarks from running too long (Remember with unoptimized instrumentation, overhead can be 1000x in some cases!).
+
 ### Verify Setup ###
 
 It is recommended to do the following to validate the setup of the artifact. Doing so will result  in running end-to-end on a single benchmark by running each experiment configuration once and  timing out if a configuration runs for over 5 seconds.
