@@ -93,8 +93,8 @@ ed and the benchmark was exited early. This is intentional to keep the benchmark
 
 ### Verify Setup ###
 
-It is recommended to do the following to validate the setup of the artifact. Doing so will result  in running end-to-end on a single benchmark by running each experiment configuration once and  timing out if a configuration runs for over 5 seconds.
-1. Run end-to-end on 3 benchmarks. Do this by leaving a 3 (of the same) benchmark files in `resources/suites/polybench` and `resources/suites/polybench-mach` (this dir needs both the base and *_ret0 variants), the `doitgen`, `durbin`, and `jacobi-1d` benchmarks are recommended as they are short.
+It is recommended to do the following to validate the setup of the artifact (should take around 15 mins). Doing so will result  in running end-to-end on a single benchmark by running each experiment configuration once and timing out if a configuration runs for over 5 seconds.
+1. Run end-to-end on 3 benchmarks. Do this by leaving a 3 benchmark files (of the same name) in `resources/suites/polybench` and `resources/suites/polybench-mach` (this dir needs both the base and *_ret0 variants), the `doitgen`, `durbin`, and `jacobi-1d` benchmarks are recommended as they are short.
 2. Limit experiment executions by changing `src/run/run-exp.py` globals:
 - `RUNS = 1`
 - `RUN_TIMEOUT = 5`
